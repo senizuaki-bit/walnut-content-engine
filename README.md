@@ -27,6 +27,10 @@ node scripts/generation.test.mjs
 
 操作方式、完整学习链、小核桃 AI 边界和课程节奏见 [`my_topdown_game-main/DEMO说明.md`](my_topdown_game-main/DEMO说明.md)。
 
+## 实机演示
+
+- [数据花园 Demo 实机录屏（原始画质）](https://github.com/senizuaki-bit/walnut-content-engine/releases/tag/demo-2026-07-20)
+
 ## 安全说明
 
 API 密钥只通过环境变量读取，不应写入仓库。内容引擎运行状态、日志、候选生成缓存、Godot 编辑器缓存和本地导出凭据均已排除。

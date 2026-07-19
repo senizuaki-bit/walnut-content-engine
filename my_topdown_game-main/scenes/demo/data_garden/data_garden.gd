@@ -168,6 +168,7 @@ var mini_objective_dot: ColorRect
 var objective_label: Label
 var progress_label: Label
 var content_version_label: Label
+var audio_toggle_button: Button
 var tutorial_panel: PanelContainer
 var tutorial_label: Label
 var interaction_label: Label
@@ -391,6 +392,9 @@ func _input(event: InputEvent) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
+		if event.physical_keycode == KEY_M:
+			audio_toggle_button.button_pressed = not audio_toggle_button.button_pressed
+			return
 		if optional_panel.visible:
 			if event.physical_keycode == KEY_ESCAPE:
 				_close_optional_puzzle()
@@ -837,6 +841,14 @@ func _build_status_ui() -> void:
 	content_version_label.add_theme_stylebox_override("normal", _style_box(Color("#17172dbb"), Color("#347d70"), 9, 1))
 	ui_root.add_child(content_version_label)
 
+	audio_toggle_button = _make_button("", Color("#3d365d"), 15)
+	audio_toggle_button.position = Vector2(892, 20)
+	audio_toggle_button.size = Vector2(166, 42)
+	audio_toggle_button.toggle_mode = true
+	audio_toggle_button.toggled.connect(_on_audio_toggled)
+	ui_root.add_child(audio_toggle_button)
+	_refresh_audio_toggle()
+
 	mini_map_panel = _make_panel(Rect2(1084, 18, 174, 124), Color("#17172de8"), Color("#8175aa"), 14)
 	mini_content = Control.new()
 	mini_content.custom_minimum_size = Vector2(146, 100)
@@ -873,6 +885,20 @@ func _build_status_ui() -> void:
 	weapon_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	weapon_badge.add_child(weapon_label)
 	weapon_badge.hide()
+
+
+func _on_audio_toggled(is_on: bool) -> void:
+	Global.set_audio_enabled(is_on, not test_mode and not capture_mode)
+	_refresh_audio_toggle()
+
+
+func _refresh_audio_toggle() -> void:
+	if not audio_toggle_button:
+		return
+	var is_on := Global.is_audio_enabled()
+	audio_toggle_button.set_pressed_no_signal(is_on)
+	audio_toggle_button.text = "声音：%s  M" % ("开" if is_on else "关")
+	audio_toggle_button.tooltip_text = "点击或按 M %s音乐和音效" % ("关闭" if is_on else "开启")
 
 
 func _build_tutorial_ui() -> void:
@@ -2414,6 +2440,14 @@ func _run_smoke_test() -> void:
 	# 用真实控制器方法验证完整认知链，而不是只检查按钮能否点击。
 	test_mode = true
 	assert(content_engine_ready)
+	assert(audio_toggle_button)
+	var initial_audio_state := Global.is_audio_enabled()
+	_on_audio_toggled(not initial_audio_state)
+	assert(Global.is_audio_enabled() == not initial_audio_state)
+	assert(AudioServer.is_bus_mute(AudioServer.get_bus_index("Music")) == initial_audio_state)
+	assert(AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX")) == initial_audio_state)
+	_on_audio_toggled(initial_audio_state)
+	assert(Global.is_audio_enabled() == initial_audio_state)
 	assert(main_loop_target >= 2 and transfer_loop_target >= 2)
 	assert(beacon_lit.size() == main_loop_target and beacon_positions.size() == main_loop_target)
 	repeat_count = 2

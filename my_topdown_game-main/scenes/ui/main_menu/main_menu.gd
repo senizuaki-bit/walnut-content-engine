@@ -44,7 +44,7 @@ func _ready() -> void:
 
 
 func update_audio_bus(bus_name: String, label: Label, is_on: bool) -> void:
-	AudioServer.set_bus_mute(AudioServer.get_bus_index(bus_name), is_on)
+	AudioServer.set_bus_mute(AudioServer.get_bus_index(bus_name), not is_on)
 	var key_name = tr("KEY_MUSIC") if bus_name == BusType.MUSIC else tr("KEY_SFX")
 	var key_value = tr("KEY_ON") if is_on else tr("KEY_OFF")
 	label.text = key_name + ": " + key_value
