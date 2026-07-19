@@ -1,0 +1,135 @@
+{
+  "unit_id": "UNIT-DATA-GARDEN-LOOP",
+  "version": "0.3.0",
+  "content_hash": "76f8de0a5308956557588bd56120b880c7385d2f5219b231a1b23139a21c03fb",
+  "generated_at": "2026-07-19T05:53:02.666Z",
+  "audience": {
+    "age_band": "8-12",
+    "lesson_minutes": 45
+  },
+  "concept_id": "CONCEPT-LOOP-COUNT",
+  "world": {
+    "theme": "data_garden",
+    "main_context": "four_dormant_light_seeds",
+    "transfer_context": "four_target_patrol_device",
+    "main_target": 4,
+    "transfer_target": 4,
+    "action": "grow",
+    "under_feedback": "last_seed_dormant",
+    "over_feedback": "overflow_ripple",
+    "exact_feedback": "four_seeds_light_in_sequence"
+  },
+  "hints": [
+    {
+      "level": 1,
+      "intent": "鼓励并确认当前目标",
+      "template": "你愿意求助很好。先确认目标：你希望四颗光种最后都醒来，对吗？",
+      "reveal_answer": false,
+      "next_action": "确认当前目标"
+    },
+    {
+      "level": 2,
+      "intent": "观察世界偏差",
+      "template": "观察运行结果：哪一颗没有按预期变化？比较亮起数量和目标数量。",
+      "reveal_answer": false,
+      "next_action": "观察未变化目标"
+    },
+    {
+      "level": 3,
+      "intent": "指出可能出错的代码区域",
+      "template": "“生长”动作已经有效，可能出错的是橙色结构里的执行次数。",
+      "reveal_answer": false,
+      "next_action": "检查执行次数"
+    },
+    {
+      "level": 4,
+      "intent": "提供部分结构与执行轨迹",
+      "template": "看执行轨迹：每执行一次只亮一颗。补齐最后一颗需要的那一步。",
+      "reveal_answer": false,
+      "next_action": "沿轨迹补齐一步"
+    },
+    {
+      "level": 5,
+      "intent": "展示答案并标记复练",
+      "template": "完整结构是“重复 4 次：生长”。这次已标记复练，仍由你亲手运行。",
+      "reveal_answer": true,
+      "needs_review": true,
+      "next_action": "学生亲手修改并运行"
+    }
+  ],
+  "diagnostic_rules": [
+    {
+      "diagnosis_id": "MISSING_REPEAT",
+      "priority": 10,
+      "condition": "program_has_no_repeat"
+    },
+    {
+      "diagnosis_id": "EMPTY_LOOP_BODY",
+      "priority": 20,
+      "condition": "repeat_body_empty"
+    },
+    {
+      "diagnosis_id": "WRONG_ACTION",
+      "priority": 30,
+      "condition": "action_not_bound_to_skin"
+    },
+    {
+      "diagnosis_id": "COUNT_TOO_SMALL",
+      "priority": 40,
+      "condition": "completed_targets_below_target"
+    },
+    {
+      "diagnosis_id": "COUNT_TOO_LARGE",
+      "priority": 50,
+      "condition": "action_without_target"
+    },
+    {
+      "diagnosis_id": "SUCCESS",
+      "priority": 100,
+      "condition": "goal_met_with_expected_structure"
+    }
+  ],
+  "misconceptions": [
+    {
+      "id": "MIS-LOOP-UNDER",
+      "signal": "repeat_count < target_count",
+      "intervention": "保留已完成结果，突出未执行目标并引导观察世界偏差"
+    },
+    {
+      "id": "MIS-LOOP-OVER",
+      "signal": "repeat_count > target_count",
+      "intervention": "让多出的执行产生可理解、无惩罚的溢出反馈"
+    },
+    {
+      "id": "MIS-LOOP-ACTION",
+      "signal": "action_not_nested",
+      "intervention": "先运行一次动作，再让学生把动作拖进结构"
+    },
+    {
+      "id": "MIS-BOSS-CONDITION",
+      "signal": "attack_when_shielded",
+      "intervention": "回放四拍轨迹并指向条件块，不提供选择题答案"
+    }
+  ],
+  "safety": {
+    "ai_can_write_core_code": false,
+    "ai_can_decide_correctness": false,
+    "ai_roles": [
+      "onboarding",
+      "graded_hint",
+      "reflection",
+      "long_term_growth_record"
+    ],
+    "levels_before_answer": 4,
+    "answer_requires_review_flag": true,
+    "student_identifier": "random_session_hash",
+    "forbidden": [
+      "姓名",
+      "学校",
+      "联系方式",
+      "羞辱",
+      "同伴比较",
+      "制造焦虑"
+    ]
+  }
+}

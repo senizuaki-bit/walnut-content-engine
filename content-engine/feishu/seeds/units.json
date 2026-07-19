@@ -1,0 +1,42 @@
+{
+  "fields": [
+    "单元ID",
+    "关联概念",
+    "版本",
+    "单元名称",
+    "世界机制",
+    "任务链",
+    "迁移任务",
+    "惊喜因果",
+    "学习证据",
+    "课堂节奏",
+    "配置JSON",
+    "发布状态",
+    "自动测试通过",
+    "教研审核通过",
+    "安全审核通过"
+  ],
+  "rows": [
+    [
+      "UNIT-DATA-GARDEN-LOOP",
+      [
+        {
+          "id": "recvpNel8Zgh4U"
+        }
+      ],
+      "0.4.0",
+      "数据花园：用循环唤醒世界",
+      "TEMPLATE-REPEAT-TARGETS统一驱动两套世界皮肤：光种成长与目标巡检。Sequence/Repeat/Action安全IR经同一解释器执行，世界适配器只负责动作和状态变化。",
+      "感知世界→预测一次动作→单次验证→积木编排→逐步轨迹→4→3反事实→四目标陌生迁移→概念命名与C代码映射→确定性Debug Boss",
+      "在四目标巡检器中，不给循环术语提示，复用同一Repeat模板和解释器完成inspect_next_target；以首次无提示成功为主证据。",
+      "学生运行的真实执行轨迹逐个点亮四颗光种；演出只放大程序因果，不替代程序逻辑。",
+      "主证据：迁移首次无提示通过。次证据：4→3反事实通过、概念—代码映射可见、Boss调试通过；趣味证据：惊喜后自愿探索与儿童评分。",
+      "45分钟；先体验后命名，主任务与迁移共用运行时语义核，AI只提供分级提示与复盘。",
+      "{\"unit_id\":\"UNIT-DATA-GARDEN-LOOP\",\"version\":\"0.4.0\",\"content_hash\":\"a06edd2aa4ff8308166eac76f759ece9858d3ff0092c6a703b511368477854d9\",\"template_id\":\"TEMPLATE-REPEAT-TARGETS\",\"event_schema_version\":\"1.0.0\",\"allowed_nodes\":[\"Sequence\",\"Repeat\",\"Action\"],\"skins\":[\"garden_light_seeds\",\"garden_inspection\"],\"diagnoses\":[\"MISSING_REPEAT\",\"EMPTY_LOOP_BODY\",\"WRONG_ACTION\",\"COUNT_TOO_SMALL\",\"COUNT_TOO_LARGE\",\"SUCCESS\"],\"session_metrics\":{\"effectiveness\":{\"transfer_first_pass_without_hint\":40,\"counterfactual_pass\":20,\"concept_revealed\":10,\"boss_debug_pass\":20,\"no_review_required\":10},\"delight\":{\"surprise_triggered\":35,\"optional_explore_completed\":35,\"post_surprise_exploration_second_cap\":30}},\"max_execution_steps\":100}",
+      "自动测试",
+      true,
+      false,
+      false
+    ]
+  ]
+}

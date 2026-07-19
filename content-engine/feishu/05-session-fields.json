@@ -1,0 +1,129 @@
+[
+  {
+    "name": "会话ID",
+    "type": "text",
+    "description": "一次课堂/试玩会话的匿名ID"
+  },
+  {
+    "name": "学生哈希",
+    "type": "text"
+  },
+  {
+    "name": "关联单元",
+    "type": "link",
+    "link_table": "内容单元"
+  },
+  {
+    "name": "内容版本",
+    "type": "text"
+  },
+  {
+    "name": "实验变体",
+    "type": "select",
+    "multiple": false,
+    "options": [
+      {
+        "name": "A",
+        "hue": "Blue"
+      },
+      {
+        "name": "B",
+        "hue": "Purple"
+      },
+      {
+        "name": "基线",
+        "hue": "Gray"
+      }
+    ]
+  },
+  {
+    "name": "主任务运行次数",
+    "type": "number",
+    "style": {
+      "type": "plain",
+      "precision": 0
+    }
+  },
+  {
+    "name": "主动求助次数",
+    "type": "number",
+    "style": {
+      "type": "plain",
+      "precision": 0
+    }
+  },
+  {
+    "name": "无提示迁移首过",
+    "type": "checkbox"
+  },
+  {
+    "name": "延迟复测通过",
+    "type": "checkbox"
+  },
+  {
+    "name": "解释通过",
+    "type": "checkbox"
+  },
+  {
+    "name": "主动探索",
+    "type": "checkbox"
+  },
+  {
+    "name": "惊喜后继续探索秒数",
+    "type": "number",
+    "style": {
+      "type": "plain",
+      "precision": 0
+    }
+  },
+  {
+    "name": "孩子惊喜评分",
+    "type": "number",
+    "style": {
+      "type": "rating",
+      "icon": "smile",
+      "min": 1,
+      "max": 5
+    }
+  },
+  {
+    "name": "教师可控性评分",
+    "type": "number",
+    "style": {
+      "type": "rating",
+      "icon": "star",
+      "min": 1,
+      "max": 5
+    }
+  },
+  {
+    "name": "AI提示来源",
+    "type": "select",
+    "multiple": false,
+    "options": [
+      {
+        "name": "DeepSeek",
+        "hue": "Green"
+      },
+      {
+        "name": "服务端回退",
+        "hue": "Orange"
+      },
+      {
+        "name": "本地回退",
+        "hue": "Gray"
+      }
+    ]
+  },
+  {
+    "name": "课堂日期",
+    "type": "datetime",
+    "style": {
+      "format": "yyyy-MM-dd HH:mm"
+    }
+  },
+  {
+    "name": "教师观察",
+    "type": "text"
+  }
+]

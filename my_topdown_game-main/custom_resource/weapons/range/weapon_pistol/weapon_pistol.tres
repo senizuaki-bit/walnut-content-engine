@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=4 format=3 uid="uid://dtgas2kcea58i"]
+
+[ext_resource type="Script" uid="uid://sxrd42tgdvgn" path="res://custom_resource/weapons/weapon_resource.gd" id="1_6mf8k"]
+[ext_resource type="Texture2D" uid="uid://cqvwy8c5l0aod" path="res://assets/sprites/weapons/tiles/tile_0001.png" id="1_q1kl0"]
+[ext_resource type="PackedScene" uid="uid://cfjap27a04a15" path="res://scenes/bullets/bullet_pistol/bullet_pistol.tscn" id="1_rl0xd"]
+
+[resource]
+script = ExtResource("1_6mf8k")
+weapon_id = "Pistol"
+weapon_name = "KEY_PISTOL"
+demage = 1.0
+cooldown = 0.4
+mana_cons = 1.0
+spread = 7.0
+bullet_speed = 200.0
+icon = ExtResource("1_q1kl0")
+bullte_scene = ExtResource("1_rl0xd")
+description = "KEY_PISTOL_DESCRIPTION"
+metadata/_custom_type_script = "uid://sxrd42tgdvgn"

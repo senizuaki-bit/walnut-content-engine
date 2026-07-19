@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://8he3pm0qwrso"]
+
+[ext_resource type="Script" uid="uid://g06e2ou6of5g" path="res://autoloads/cursor/cursor.gd" id="1_mgxgo"]
+
+[node name="Cursor" type="CanvasLayer"]
+script = ExtResource("1_mgxgo")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+
+[connection signal="texture_changed" from="Sprite" to="." method="_on_sprite_texture_changed"]

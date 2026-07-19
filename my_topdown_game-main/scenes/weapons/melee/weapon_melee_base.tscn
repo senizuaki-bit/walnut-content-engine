@@ -1,0 +1,93 @@
+[gd_scene load_steps=7 format=3 uid="uid://duvn72byqnv3j"]
+
+[ext_resource type="Script" uid="uid://d0o2seogtkivk" path="res://scenes/weapons/melee/weapon_melee.gd" id="1_hnprs"]
+[ext_resource type="Texture2D" uid="uid://d2akrrxsegdf4" path="res://assets/sprites/weapons/swordslash.png" id="2_kwg6y"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_kwg6y"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vn62d"]
+particle_flag_disable_z = true
+spread = 0.0
+initial_velocity_min = 350.0
+initial_velocity_max = 350.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.7
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[sub_resource type="Animation" id="Animation_immbn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kwg6y"]
+_data = {
+&"RESET": SubResource("Animation_immbn")
+}
+
+[node name="WeaponMeleeBase" type="Node2D"]
+script = ExtResource("1_hnprs")
+
+[node name="Pivot" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Pivot"]
+unique_name_in_owner = true
+scale = Vector2(1.5, 1.5)
+
+[node name="Hitbox" type="Area2D" parent="Pivot"]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pivot/Hitbox"]
+
+[node name="SlashParticle" type="GPUParticles2D" parent="Pivot"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_kwg6y")
+position = Vector2(7, 0)
+emitting = false
+amount = 1
+texture = ExtResource("2_kwg6y")
+lifetime = 0.1
+one_shot = true
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_vn62d")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_kwg6y")
+}
+
+[node name="Cooldown" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[connection signal="body_entered" from="Pivot/Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_exited" from="Pivot/Hitbox" to="." method="_on_hitbox_body_exited"]
+[connection signal="timeout" from="Cooldown" to="." method="_on_cooldown_timeout"]

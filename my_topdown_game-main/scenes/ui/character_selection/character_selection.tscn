@@ -1,0 +1,202 @@
+[gd_scene load_steps=28 format=3 uid="uid://bkyvs4bklr68t"]
+
+[ext_resource type="PackedScene" uid="uid://c362arkl0oiht" path="res://scenes/ui/banckground/banckground.tscn" id="1_avnoy"]
+[ext_resource type="Script" uid="uid://cakamljuqs1jh" path="res://scenes/ui/character_selection/character_selection.gd" id="1_jtguu"]
+[ext_resource type="LabelSettings" uid="uid://d11l46p8hxwne" path="res://theme/extra/font/font_48.tres" id="1_qkry7"]
+[ext_resource type="PackedScene" uid="uid://dgc8bf1w5ksd2" path="res://scenes/ui/player/player_card/player_card.tscn" id="2_1dsk2"]
+[ext_resource type="Script" uid="uid://blsalc4owo6k2" path="res://custom_resource/player/player_resource.gd" id="2_ino53"]
+[ext_resource type="Resource" uid="uid://16tnpwkquccc" path="res://custom_resource/player/player_dog/palyer_dog.tres" id="3_2orvb"]
+[ext_resource type="PackedScene" uid="uid://b0bypmafxdd7o" path="res://scenes/ui/weapon/weapon_card/weapon_card.tscn" id="3_5vvnq"]
+[ext_resource type="AudioStream" uid="uid://uhc8vbgtjq81" path="res://theme/audio/sound/random_sound.tres" id="3_cline"]
+[ext_resource type="Resource" uid="uid://3pmsorntgjh4" path="res://custom_resource/player/player_cat/player_cat.tres" id="4_g3fbh"]
+[ext_resource type="Texture2D" uid="uid://dy8e3xkc5qdbp" path="res://assets/sprites/interface/Tilemap/tilemap_packed.png" id="4_nbxll"]
+[ext_resource type="AudioStream" uid="uid://dlyw3ke5ldgn7" path="res://assets/sounds/button_hover.wav" id="4_r0g64"]
+[ext_resource type="LabelSettings" uid="uid://dpegkl2vv52qo" path="res://theme/extra/font/font_16.tres" id="5_l7gu0"]
+[ext_resource type="Resource" uid="uid://bn0h734k3dvxl" path="res://custom_resource/player/player_mouse/player_mouse.tres" id="5_tamqb"]
+[ext_resource type="Resource" uid="uid://dbrfijiic2lkl" path="res://custom_resource/player/player_bunny/player_bunny.tres" id="6_fqsti"]
+[ext_resource type="Script" uid="uid://sxrd42tgdvgn" path="res://custom_resource/weapons/weapon_resource.gd" id="7_6g0l1"]
+[ext_resource type="Resource" uid="uid://bcdx2d0wr0d8c" path="res://custom_resource/weapons/range/weapon_machine_gun/weapon_machine_gun.tres" id="8_cline"]
+[ext_resource type="Resource" uid="uid://dtgas2kcea58i" path="res://custom_resource/weapons/range/weapon_pistol/weapon_pistol.tres" id="9_r0g64"]
+[ext_resource type="Resource" uid="uid://cpubfxf5a3t3u" path="res://custom_resource/weapons/range/weapon_rifles/weapon_rifles.tres" id="10_nobp3"]
+[ext_resource type="Resource" uid="uid://dc2xp411u3lp1" path="res://custom_resource/weapons/range/weapon_shotgun/weapon_shotgun.tres" id="11_k1gwy"]
+[ext_resource type="Resource" uid="uid://qdcfxtnt3xq8" path="res://custom_resource/weapons/range/weapon_snipe/weapon_snipe.tres" id="12_widpi"]
+[ext_resource type="Resource" uid="uid://ca2urc28gwha8" path="res://custom_resource/weapons/range/weapon_submachine_gun/weapon_submachine_gun.tres" id="13_rqvtf"]
+[ext_resource type="Resource" uid="uid://cwxvk7tcf16sf" path="res://custom_resource/weapons/range/weapon_uzi/weapon_uzi.tres" id="14_0026x"]
+[ext_resource type="Resource" uid="uid://brhbeo7e53hds" path="res://custom_resource/weapons/melee/weapon_sword.tres" id="18_k1gwy"]
+[ext_resource type="Resource" uid="uid://b4k47b4aku6a5" path="res://custom_resource/weapons/melee/weapon_axe.tres" id="19_widpi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6g0l1"]
+atlas = ExtResource("4_nbxll")
+region = Rect2(80, 64, 15, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nbxll"]
+atlas = ExtResource("4_nbxll")
+region = Rect2(112, 48, 48, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l7gu0"]
+atlas = ExtResource("4_nbxll")
+region = Rect2(176, 48, 48, 16)
+
+[node name="CharacterSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jtguu")
+selection_cursor = SubResource("AtlasTexture_6g0l1")
+sound_stream = ExtResource("3_cline")
+hover_stream = ExtResource("4_r0g64")
+players = Array[ExtResource("2_ino53")]([ExtResource("3_2orvb"), ExtResource("4_g3fbh"), ExtResource("5_tamqb"), ExtResource("6_fqsti")])
+weapons = Array[ExtResource("7_6g0l1")]([ExtResource("8_cline"), ExtResource("9_r0g64"), ExtResource("10_nobp3"), ExtResource("11_k1gwy"), ExtResource("12_widpi"), ExtResource("13_rqvtf"), ExtResource("14_0026x"), ExtResource("18_k1gwy"), ExtResource("19_widpi")])
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 16.0
+offset_bottom = 64.0
+grow_horizontal = 2
+text = "KEY_CHARACTER_SELECTION"
+label_settings = ExtResource("1_qkry7")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerContainer" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(450, 64)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -225.0
+offset_top = 108.0
+offset_right = 225.0
+offset_bottom = 188.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="PlayerCard" parent="PlayerContainer" instance=ExtResource("2_1dsk2")]
+layout_mode = 2
+
+[node name="PlayerCard2" parent="PlayerContainer" instance=ExtResource("2_1dsk2")]
+layout_mode = 2
+
+[node name="PlayerCard3" parent="PlayerContainer" instance=ExtResource("2_1dsk2")]
+layout_mode = 2
+
+[node name="PlayerCard4" parent="PlayerContainer" instance=ExtResource("2_1dsk2")]
+layout_mode = 2
+
+[node name="WeaponContainer" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(450, 80)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.0
+offset_top = 6.0
+offset_right = 225.0
+offset_bottom = 86.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="WeaponCard" parent="WeaponContainer" instance=ExtResource("3_5vvnq")]
+layout_mode = 2
+
+[node name="WeaponCard2" parent="WeaponContainer" instance=ExtResource("3_5vvnq")]
+layout_mode = 2
+
+[node name="WeaponCard3" parent="WeaponContainer" instance=ExtResource("3_5vvnq")]
+layout_mode = 2
+
+[node name="WeaponCard4" parent="WeaponContainer" instance=ExtResource("3_5vvnq")]
+layout_mode = 2
+
+[node name="WeaponCard5" parent="WeaponContainer" instance=ExtResource("3_5vvnq")]
+layout_mode = 2
+
+[node name="WeaponCard6" parent="WeaponContainer" instance=ExtResource("3_5vvnq")]
+layout_mode = 2
+
+[node name="WeaponCard7" parent="WeaponContainer" instance=ExtResource("3_5vvnq")]
+layout_mode = 2
+
+[node name="Buttons" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 84)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Buttons"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -30.0
+offset_right = 60.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+
+[node name="PlayButton" type="TextureButton" parent="Buttons/HBoxContainer"]
+custom_minimum_size = Vector2(120, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture_normal = SubResource("AtlasTexture_nbxll")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Buttons/HBoxContainer/PlayButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "KEY_PLAY"
+label_settings = ExtResource("5_l7gu0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackButton" type="TextureButton" parent="Buttons/HBoxContainer"]
+custom_minimum_size = Vector2(120, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture_normal = SubResource("AtlasTexture_l7gu0")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Buttons/HBoxContainer/BackButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "KEY_BACK"
+label_settings = ExtResource("5_l7gu0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BanckgroundLayer" parent="." instance=ExtResource("1_avnoy")]
+
+[connection signal="mouse_entered" from="Buttons/HBoxContainer/PlayButton" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="Buttons/HBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="mouse_entered" from="Buttons/HBoxContainer/BackButton" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="Buttons/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

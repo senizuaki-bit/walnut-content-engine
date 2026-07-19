@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://ccw60j2l4l7wn"]
+
+[ext_resource type="Texture2D" uid="uid://b6i0q5i8rwf7l" path="res://assets/sprites/tiles/tilemap_packed.png" id="1_l17x2"]
+[ext_resource type="Script" uid="uid://ckyrrue2h7f7h" path="res://scenes/ui/treasure_box/treasure_box.gd" id="1_mwp4d"]
+[ext_resource type="AudioStream" uid="uid://cmxnbn2dtohwj" path="res://assets/sounds/chest.ogg" id="2_v8njy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mwp4d"]
+atlas = ExtResource("1_l17x2")
+region = Rect2(0, 194, 16, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l17x2"]
+atlas = ExtResource("1_l17x2")
+region = Rect2(16, 192, 16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l17x2"]
+size = Vector2(20, 18)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l17x2"]
+radius = 16.0
+
+[node name="TreasureBox" type="StaticBody2D"]
+collision_mask = 2
+script = ExtResource("1_mwp4d")
+chest_sound = ExtResource("2_v8njy")
+
+[node name="ChestClose" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture = SubResource("AtlasTexture_mwp4d")
+
+[node name="ChestOpen" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+texture = SubResource("AtlasTexture_l17x2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_l17x2")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_l17x2")
+debug_color = Color(0.95135266, 0.075981475, 0.5221597, 0.41960785)
+
+[node name="DropPosition" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 9)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

@@ -1,0 +1,68 @@
+[
+  {
+    "name": "概念ID",
+    "type": "text",
+    "description": "稳定机器ID，发布后不改名"
+  },
+  {
+    "name": "概念名称",
+    "type": "text"
+  },
+  {
+    "name": "认知本质",
+    "type": "text"
+  },
+  {
+    "name": "年龄段",
+    "type": "select",
+    "multiple": false,
+    "options": [
+      {
+        "name": "8-12",
+        "hue": "Green"
+      }
+    ]
+  },
+  {
+    "name": "掌握标准",
+    "type": "text"
+  },
+  {
+    "name": "前置概念",
+    "type": "text"
+  },
+  {
+    "name": "课程状态",
+    "type": "select",
+    "multiple": false,
+    "options": [
+      {
+        "name": "草稿",
+        "hue": "Gray"
+      },
+      {
+        "name": "试教",
+        "hue": "Orange"
+      },
+      {
+        "name": "已验证",
+        "hue": "Green"
+      }
+    ]
+  },
+  {
+    "name": "安全边界",
+    "type": "text"
+  },
+  {
+    "name": "当前版本",
+    "type": "text"
+  },
+  {
+    "name": "更新时间",
+    "type": "updated_at",
+    "style": {
+      "format": "yyyy-MM-dd HH:mm"
+    }
+  }
+]

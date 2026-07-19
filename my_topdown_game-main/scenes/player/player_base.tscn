@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://dnskrt4k5ldbr"]
+
+[ext_resource type="Script" uid="uid://doko3gb4wm4q6" path="res://scenes/player/player.gd" id="1_xb0ah"]
+[ext_resource type="Script" uid="uid://b4emqkh6ethy8" path="res://components/health_component/health_component.gd" id="3_0t7ad"]
+[ext_resource type="Texture2D" uid="uid://dawvmsgg5mc6o" path="res://assets/sprites/Shadow.png" id="3_76ihk"]
+[ext_resource type="PackedScene" uid="uid://bikbttvsagmg3" path="res://scenes/weapons/weapon_controller/weapon_controller.tscn" id="4_0t7ad"]
+
+[node name="PlayerBase" type="CharacterBody2D"]
+editor_description = "基础玩家节点"
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_xb0ah")
+metadata/_edit_group_ = true
+
+[node name="Visuais" type="Node2D" parent="."]
+unique_name_in_owner = true
+editor_description = "视觉节点"
+scale = Vector2(1.25, 1.25)
+
+[node name="Shadow" type="Sprite2D" parent="Visuais"]
+scale = Vector2(1.3, 1)
+texture = ExtResource("3_76ihk")
+
+[node name="PlayerAnimatedSprite" type="AnimatedSprite2D" parent="Visuais"]
+unique_name_in_owner = true
+position = Vector2(0, -12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+editor_description = "碰撞节点"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+editor_description = "相机节点"
+
+[node name="HealthComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_0t7ad")
+metadata/_custom_type_script = "uid://b4emqkh6ethy8"
+
+[node name="WeaponController" parent="." instance=ExtResource("4_0t7ad")]
+unique_name_in_owner = true
+
+[connection signal="on_unit_damaged" from="HealthComponent" to="." method="_on_health_component_on_unit_damaged"]
+[connection signal="on_unit_dead" from="HealthComponent" to="." method="_on_health_component_on_unit_dead"]
+[connection signal="on_unit_healed" from="HealthComponent" to="." method="_on_health_component_on_unit_healed"]

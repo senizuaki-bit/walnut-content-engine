@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=3 uid="uid://d4f8air3sd4qg"]
+
+[ext_resource type="Script" uid="uid://bqd2oy8vpmrjl" path="res://scenes/ui/protal/protal.gd" id="1_dw15p"]
+[ext_resource type="Texture2D" uid="uid://b7cnv3rm7kk8g" path="res://assets/sprites/Dimensional_Portal.png" id="1_og1b5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dw15p"]
+atlas = ExtResource("1_og1b5")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qmf4t"]
+atlas = ExtResource("1_og1b5")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cdn23"]
+atlas = ExtResource("1_og1b5")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l4h2l"]
+atlas = ExtResource("1_og1b5")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f0hxc"]
+atlas = ExtResource("1_og1b5")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2owrt"]
+atlas = ExtResource("1_og1b5")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_iq140"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dw15p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qmf4t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cdn23")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l4h2l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f0hxc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2owrt")
+}],
+"loop": true,
+"name": &"in",
+"speed": 8.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_og1b5"]
+radius = 8.0
+
+[node name="Protal" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_dw15p")
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_iq140")
+animation = &"in"
+autoplay = "in"
+frame_progress = 0.9232773
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 0)
+shape = SubResource("CapsuleShape2D_og1b5")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

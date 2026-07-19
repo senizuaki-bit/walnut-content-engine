@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=3 uid="uid://73biq44h5yha"]
+
+[ext_resource type="PackedScene" uid="uid://bsvpy0e1smm44" path="res://scenes/enemies/enemy_base.tscn" id="1_uqw3u"]
+[ext_resource type="Texture2D" uid="uid://dt305ttjc2qw7" path="res://assets/sprites/enemies/Sprites/tile_0015.png" id="2_0ttpq"]
+[ext_resource type="Texture2D" uid="uid://xo043uc37wpm" path="res://assets/sprites/enemies/Sprites/tile_0014.png" id="2_7033g"]
+[ext_resource type="Texture2D" uid="uid://cijt4b5liatug" path="res://assets/sprites/enemies/Sprites/tile_0012.png" id="2_afbbx"]
+[ext_resource type="Resource" uid="uid://be78xukdy85cm" path="res://custom_resource/weapons/enemy_weapons/enemy_pistol/pistol_enemy.tres" id="2_dr3hu"]
+[ext_resource type="Texture2D" uid="uid://dlawjfchfn4so" path="res://assets/sprites/enemies/Sprites/tile_0013.png" id="3_7033g"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_v6q4v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_0ttpq")
+}],
+"loop": false,
+"name": &"die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7033g")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_afbbx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_7033g")
+}],
+"loop": true,
+"name": &"move",
+"speed": 8.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0ttpq"]
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3w5uu"]
+
+[node name="Enemy4" instance=ExtResource("1_uqw3u")]
+enemy_type = "Weapon"
+icon_particle = ExtResource("2_0ttpq")
+weapon = ExtResource("2_dr3hu")
+
+[node name="AnimatedSprite" parent="Visuais" index="1"]
+sprite_frames = SubResource("SpriteFrames_v6q4v")
+animation = &"move"
+autoplay = "move"
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, -10)
+shape = SubResource("CircleShape2D_0ttpq")
+
+[node name="PlayerDetector" parent="." index="2"]
+collision_layer = 0
+
+[node name="CollisionShape2D" parent="PlayerDetector" index="0"]
+position = Vector2(0, -10)
+shape = SubResource("CircleShape2D_3w5uu")
+debug_color = Color(0.9372549, 0.09803922, 0.5686275, 0.41960785)

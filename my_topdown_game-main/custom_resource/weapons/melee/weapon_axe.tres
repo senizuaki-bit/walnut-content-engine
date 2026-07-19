@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=3 format=3 uid="uid://b4k47b4aku6a5"]
+
+[ext_resource type="Script" uid="uid://sxrd42tgdvgn" path="res://custom_resource/weapons/weapon_resource.gd" id="1_7p2k2"]
+[ext_resource type="Texture2D" uid="uid://hm683tll4af4" path="res://assets/sprites/weapons/tiles/tile_0009.png" id="1_fskt4"]
+
+[resource]
+script = ExtResource("1_7p2k2")
+weapon_id = "Axe"
+weapon_name = "KEY_AXE"
+demage = 0.9
+cooldown = 0.39
+mana_cons = 0.3
+icon = ExtResource("1_fskt4")
+metadata/_custom_type_script = "uid://sxrd42tgdvgn"

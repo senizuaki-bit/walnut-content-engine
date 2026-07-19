@@ -1,0 +1,49 @@
+KEYS,en,zh
+KEY_PLAY,PLAY,开始
+KEY_SETTINGS,SETTINGS,设置
+KEY_QUIT,QUIT,退出
+KEY_MUSIC,MUSIC,音乐
+KEY_SFX,SFX,音效
+KEY_ON,ON,开启
+KEY_OFF,OFF,关闭
+KEY_WINDOW,WINDOWED,全屏
+KEY_BACK,BACK,返回
+kEY_BUNNY,Bunny,兔
+KEY_CAT,Cat,猫
+KEY_DOG,Dog,狗
+KEY_MOUSE,Mouse,鼠
+KEY_PISTOL,Pistol,手枪
+KEY_PISTOL_DESCRIPTION,Low damage per bullet， but high fire rate.,每发子弹的伤害较低，但射击速度较快。
+KEY_ZUI,ZUI,乌兹
+KEY_ZUI_DESCRIPTION,Small SMG， very fast fire rate， low damage per bullet.,小型冲锋枪，射击速度极快，每发子弹的伤害较低。
+KEY_MACHINE_GUN,MACHINE_GUN,机枪
+KEY_MACHINE_GUN_DESCRIPTION,Small SMG， very fast fire rate， low damage per bullet.,小型冲锋枪，射击速度极快，每发子弹的伤害较低。
+KEY_RIFLE,RIFLE,AK_47
+KEY_RIFLE_DESCRIPTION,High damage per bullet，but low fire rate.,每发子弹的伤害较高，但射击速度较慢。
+KEY_SHOTGUN,SHOTGUN,霰弹枪
+KEY_SHOTGUN_DESCRIPTION,Medium damage per bullet， medium fire rate， medium damage per shot.,中伤害每发子弹，中射击速度，中伤害每发。
+KEY_SNIPER,SNIPER,狙击枪
+KEY_SNIPER_DESCRIPTION,High damage per bullet， but low fire rate.,每发子弹的伤害较高，但射击速度较慢。
+KEY_SUBMACHINE_GUN,SUBMACHINE_GUN,冲锋枪
+KEY_SUBMACHINE_GUN_DESCRIPTION,Medium damage per bullet， medium fire rate， medium damage per shot.,中伤害每发子弹，中射击速度，中伤害每发。
+KEY_CHARACTER_SELECTION,CHARACTER_SELECTION,角色选择
+KEY_POTION2,POTION +2,药水 +2
+KEY_POTION2_DESCRIPTION,Recovery health by 2.,恢复2点生命
+KEY_POTION4,POTION +4,药水 +4
+KEY_POTION4_DESCRIPTION,Recovery health by 4.,恢复4点生命
+KEY_POTION8,POTION +8,药水 +8
+KEY_POTION8_DESCRIPTION,Recovery health by 8.,恢复8点生命
+KEY_MANA2,MANA +2,魔法值 +2
+KEY_MANA2_DESCRIPTION,Recovery mana by 2.,恢复2点魔法值
+KEY_MANA4,MANA +4,魔法值 +4
+KEY_MANA4_DESCRIPTION,Recovery mana by 4.,恢复4点魔法值
+KEY_MANA8,MANA +8,魔法值 +8
+KEY_MANA8_DESCRIPTION,Recovery mana by 8.,恢复8点魔法值
+KEY_MAGIC5,MAGIC +5,魔法值 +5
+KEY_MAGIC5_DESCRIPTION,Maximum magic value increased by 5 points.,最大魔法值增加5点
+KEY_MAGIC10,MAGIC +10,魔法值 +10
+KEY_MAGIC10_DESCRIPTION,Maximum magic value increased by 10 points.,最大魔法值增加10点
+KEY_SPEED5,SPEED +5,速度 +5
+KEY_SPEED5_DESCRIPTION,Movement speed increased by 5 points.,移动速度增加5点
+KEY_SPEED15,SPEED +15,速度 +15
+KEY_SPEED15_DESCRIPTION,Movement speed increased by 15 points.,移动速度增加15点

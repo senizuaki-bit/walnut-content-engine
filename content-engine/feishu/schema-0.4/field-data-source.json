@@ -1,0 +1,10 @@
+{
+  "type": "select",
+  "name": "数据来源",
+  "multiple": false,
+  "options": [
+    { "name": "自动事件聚合", "hue": "Green", "lightness": "Lighter" },
+    { "name": "教师录入", "hue": "Blue", "lightness": "Lighter" },
+    { "name": "自动化QA", "hue": "Gray", "lightness": "Lighter" }
+  ]
+}

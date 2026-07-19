@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3 uid="uid://dgc8bf1w5ksd2"]
+
+[ext_resource type="Texture2D" uid="uid://clv0dnuyxhqg8" path="res://assets/sprites/interface/Button_Blue.png" id="1_8wuk3"]
+[ext_resource type="Script" uid="uid://bhpjeg0i0ijas" path="res://scenes/ui/player/player_card/player_card.gd" id="2_kkjqb"]
+[ext_resource type="AudioStream" uid="uid://dlyw3ke5ldgn7" path="res://assets/sounds/button_hover.wav" id="3_2ofu4"]
+[ext_resource type="Resource" uid="uid://16tnpwkquccc" path="res://custom_resource/player/player_dog/palyer_dog.tres" id="3_kkjqb"]
+[ext_resource type="Texture2D" uid="uid://btvvlw1s6noca" path="res://assets/sprites/interface/Selector.png" id="5_bstco"]
+[ext_resource type="PackedScene" uid="uid://hu88nv8iy1fb" path="res://scenes/ui/description_panel/discription_panel.tscn" id="6_2rpbg"]
+
+[node name="PlayerCard" type="TextureButton"]
+custom_minimum_size = Vector2(60, 60)
+texture_normal = ExtResource("1_8wuk3")
+stretch_mode = 5
+script = ExtResource("2_kkjqb")
+hover_stream = ExtResource("3_2ofu4")
+player_resource = ExtResource("3_kkjqb")
+
+[node name="Icon" type="TextureRect" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(20, 20)
+mouse_filter = 2
+
+[node name="Selector" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = -1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_bstco")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DiscriptionPanel" parent="." instance=ExtResource("6_2rpbg")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+offset_left = -80.0
+offset_top = -98.0
+offset_right = 80.0
+offset_bottom = -58.0
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

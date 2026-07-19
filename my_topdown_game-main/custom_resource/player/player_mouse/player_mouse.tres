@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="PlayerResource" load_steps=3 format=3 uid="uid://bn0h734k3dvxl"]
+
+[ext_resource type="Script" uid="uid://blsalc4owo6k2" path="res://custom_resource/player/player_resource.gd" id="1_1ce3s"]
+[ext_resource type="Texture2D" uid="uid://b3ao4n36yvjd0" path="res://assets/sprites/players/tile_0008.png" id="1_awyqp"]
+
+[resource]
+script = ExtResource("1_1ce3s")
+player_id = "Mouse"
+Player_name = "KEY_MOUSE"
+max_hp = 10.0
+move_speed = 210.0
+magic = 100.0
+icon = ExtResource("1_awyqp")
+metadata/_custom_type_script = "uid://blsalc4owo6k2"

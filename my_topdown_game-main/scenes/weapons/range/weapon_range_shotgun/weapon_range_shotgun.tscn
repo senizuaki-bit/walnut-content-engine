@@ -1,0 +1,9 @@
+[gd_scene load_steps=4 format=3 uid="uid://bd853itgqoqts"]
+
+[ext_resource type="PackedScene" uid="uid://0p1vk1iqtyia" path="res://scenes/weapons/range/weapon_range_base.tscn" id="1_q6ror"]
+[ext_resource type="Resource" uid="uid://dc2xp411u3lp1" path="res://custom_resource/weapons/range/weapon_shotgun/weapon_shotgun.tres" id="2_dnxp3"]
+[ext_resource type="AudioStream" uid="uid://be1kooau77rtj" path="res://assets/sounds/shoot-f.ogg" id="3_63jnt"]
+
+[node name="WeaponRangeShotgun" instance=ExtResource("1_q6ror")]
+weapon_resource = ExtResource("2_dnxp3")
+shoot_sound = ExtResource("3_63jnt")

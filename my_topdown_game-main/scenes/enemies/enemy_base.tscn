@@ -1,0 +1,79 @@
+[gd_scene load_steps=9 format=3 uid="uid://bsvpy0e1smm44"]
+
+[ext_resource type="Script" uid="uid://solis4d1vg3y" path="res://scenes/enemies/enemy.gd" id="1_qty17"]
+[ext_resource type="AudioStream" uid="uid://dmai3vjk5si8m" path="res://assets/sounds/enemy_hurt_1.ogg" id="2_pkqou"]
+[ext_resource type="Texture2D" uid="uid://dawvmsgg5mc6o" path="res://assets/sprites/Shadow.png" id="3_satqt"]
+[ext_resource type="Script" uid="uid://b4emqkh6ethy8" path="res://components/health_component/health_component.gd" id="4_qa0nx"]
+[ext_resource type="Script" uid="uid://ct6omq2udthcr" path="res://scenes/weapons/weapon_controller/weapon_controller.gd" id="5_xdb20"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qa0nx"]
+radius = 25.079872
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_satqt"]
+bg_color = Color(0.27058825, 0, 0.050980393, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qa0nx"]
+bg_color = Color(1, 0.2, 0.53333336, 1)
+
+[node name="EnemyBase" type="CharacterBody2D"]
+collision_layer = 4
+script = ExtResource("1_qty17")
+hurt_sound = ExtResource("2_pkqou")
+
+[node name="Visuais" type="Node2D" parent="."]
+
+[node name="Shadow" type="Sprite2D" parent="Visuais"]
+self_modulate = Color(1, 1, 1, 0.5019608)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_satqt")
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="Visuais"]
+unique_name_in_owner = true
+position = Vector2(0, -12)
+scale = Vector2(1.2, 1.2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
+
+[node name="EnemyDetector" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
+position = Vector2(0, -12)
+shape = SubResource("CircleShape2D_qa0nx")
+debug_color = Color(0, 0.64370733, 0.30077446, 0.41960785)
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 4)
+offset_left = -10.0
+offset_top = -20.0
+offset_right = 10.0
+offset_bottom = -16.0
+theme_override_styles/background = SubResource("StyleBoxFlat_satqt")
+theme_override_styles/fill = SubResource("StyleBoxFlat_qa0nx")
+max_value = 1.0
+value = 0.5
+show_percentage = false
+
+[node name="HealthComponent" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_qa0nx")
+metadata/_custom_type_script = "uid://b4emqkh6ethy8"
+
+[node name="WeaponController" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_xdb20")
+metadata/_custom_type_script = "uid://ct6omq2udthcr"
+
+[connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]
+[connection signal="on_unit_damaged" from="HealthComponent" to="." method="_on_health_component_on_unit_damaged"]
+[connection signal="on_unit_dead" from="HealthComponent" to="." method="_on_health_component_on_unit_dead"]

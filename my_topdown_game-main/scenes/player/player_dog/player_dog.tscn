@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=3 uid="uid://rpd0au1i8457"]
+
+[ext_resource type="PackedScene" uid="uid://dnskrt4k5ldbr" path="res://scenes/player/player_base.tscn" id="1_x8h1r"]
+[ext_resource type="Resource" uid="uid://16tnpwkquccc" path="res://custom_resource/player/player_dog/palyer_dog.tres" id="2_c7rn8"]
+[ext_resource type="Texture2D" uid="uid://cnttucjccgouq" path="res://assets/sprites/players/tile_0003.png" id="2_q1868"]
+[ext_resource type="Texture2D" uid="uid://ccab6or5n1nai" path="res://assets/sprites/players/tile_0000.png" id="2_v602w"]
+[ext_resource type="Texture2D" uid="uid://cemiyrcpjly84" path="res://assets/sprites/players/tile_0001.png" id="3_q1868"]
+[ext_resource type="Texture2D" uid="uid://cyey76bu4l4v5" path="res://assets/sprites/players/tile_0002.png" id="4_c7rn8"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ck3yk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_q1868")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_v602w")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_q1868")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_c7rn8")
+}],
+"loop": true,
+"name": &"move",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c7rn8"]
+radius = 8.0
+
+[node name="PlayerDog" instance=ExtResource("1_x8h1r")]
+player_resource = ExtResource("2_c7rn8")
+
+[node name="PlayerAnimatedSprite" parent="Visuais" index="1"]
+sprite_frames = SubResource("SpriteFrames_ck3yk")
+animation = &"move"
+autoplay = "idle"
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, -8)
+shape = SubResource("CircleShape2D_c7rn8")
+
+[node name="WeaponController" parent="." index="4"]
+unique_name_in_owner = true

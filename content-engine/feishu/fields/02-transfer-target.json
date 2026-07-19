@@ -1,0 +1,8 @@
+{
+  "name": "迁移目标数",
+  "type": "number",
+  "style": {
+    "type": "plain",
+    "precision": 0
+  }
+}

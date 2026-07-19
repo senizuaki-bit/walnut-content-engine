@@ -1,0 +1,7 @@
+{
+  "name": "发布时间",
+  "type": "datetime",
+  "style": {
+    "format": "yyyy-MM-dd HH:mm"
+  }
+}

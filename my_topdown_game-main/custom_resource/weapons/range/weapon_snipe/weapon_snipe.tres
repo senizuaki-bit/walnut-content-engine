@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=4 format=3 uid="uid://qdcfxtnt3xq8"]
+
+[ext_resource type="Texture2D" uid="uid://b3162fce4jytf" path="res://assets/sprites/weapons/tiles/tile_0003.png" id="1_4abin"]
+[ext_resource type="Script" uid="uid://sxrd42tgdvgn" path="res://custom_resource/weapons/weapon_resource.gd" id="1_b15mn"]
+[ext_resource type="PackedScene" uid="uid://cjnpgmt6ih5yi" path="res://scenes/bullets/bullet_sniper/bullet_sniper.tscn" id="1_x8be2"]
+
+[resource]
+script = ExtResource("1_b15mn")
+weapon_id = "Sniper"
+weapon_name = "KEY_SNIPER"
+demage = 6.0
+cooldown = 1.2
+mana_cons = 2.5
+spread = 1.0
+bullet_speed = 400.0
+icon = ExtResource("1_4abin")
+bullte_scene = ExtResource("1_x8be2")
+description = "KEY_SNIPER_DESCRIPTION"
+metadata/_custom_type_script = "uid://sxrd42tgdvgn"

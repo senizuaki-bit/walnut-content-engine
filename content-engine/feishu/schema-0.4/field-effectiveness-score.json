@@ -1,0 +1,11 @@
+{
+  "type": "number",
+  "name": "效果得分",
+  "description": "由迁移首过、反事实、概念显形、Debug与复练标记确定性聚合；范围0-100",
+  "style": {
+    "type": "plain",
+    "precision": 0,
+    "percentage": false,
+    "thousands_separator": false
+  }
+}

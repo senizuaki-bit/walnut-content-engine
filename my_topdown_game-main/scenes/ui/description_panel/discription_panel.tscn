@@ -1,0 +1,45 @@
+[gd_scene load_steps=4 format=3 uid="uid://hu88nv8iy1fb"]
+
+[ext_resource type="Script" uid="uid://ccsjwhljhsh6p" path="res://scenes/ui/description_panel/discription_panel.gd" id="1_b44i0"]
+[ext_resource type="Texture2D" uid="uid://c5vwsotmmnflp" path="res://assets/sprites/interface/itembg.png" id="2_atkpe"]
+[ext_resource type="LabelSettings" uid="uid://dpegkl2vv52qo" path="res://theme/extra/font/font_16.tres" id="3_gac74"]
+
+[node name="DiscriptionPanel" type="Control"]
+z_index = 5
+custom_minimum_size = Vector2(220, 100)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -420.0
+offset_bottom = -260.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(110, 50)
+script = ExtResource("1_b44i0")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+custom_minimum_size = Vector2(220, 100)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_atkpe")
+region_rect = Rect2(2, 2, 60, 60)
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="DiscriptionLabel" type="Label" parent="NinePatchRect"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Testing"
+label_settings = ExtResource("3_gac74")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

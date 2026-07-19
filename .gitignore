@@ -1,0 +1,14 @@
+xiao-hetao-ai-server/.env
+xiao-hetao-ai-server/*.log
+content-engine/*.log
+content-engine/.state/
+content-engine/candidates/
+
+# Godot editor cache, local export credentials, and QA artifacts
+my_topdown_game-main/.godot/
+my_topdown_game-main/qa/
+
+# Local operating-system artifacts
+.DS_Store
+Thumbs.db
+Desktop.ini

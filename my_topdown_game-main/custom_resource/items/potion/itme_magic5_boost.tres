@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemsResource" load_steps=3 format=3 uid="uid://rrb50he4hlmb"]
+
+[ext_resource type="Script" uid="uid://boop2l6xqphv0" path="res://custom_resource/items/items_resource.gd" id="1_nb1a5"]
+[ext_resource type="Texture2D" uid="uid://dgyhmvw6v1grs" path="res://assets/sprites/items/Item_White2.png" id="1_ysxow"]
+
+[resource]
+script = ExtResource("1_nb1a5")
+item_id = "Magic"
+item_name = "KEY_MAGIC5"
+value = 5.0
+price = 10.0
+rarity = 1
+icon = ExtResource("1_ysxow")
+discription = "KEY_MAGIC10_DESCRIPTION"
+metadata/_custom_type_script = "uid://boop2l6xqphv0"

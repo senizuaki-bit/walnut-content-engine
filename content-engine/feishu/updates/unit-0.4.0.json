@@ -1,0 +1,9 @@
+{
+  "版本": "0.4.0",
+  "学习证据": "原始事件经event schema、内容版本和哈希校验后写入服务端JSONL；按会话聚合无提示迁移首过、4→3反事实、概念显形、Boss调试、复练及惊喜后探索，再回写飞书课堂证据。",
+  "配置JSON": "{\"unit_id\":\"UNIT-DATA-GARDEN-LOOP\",\"version\":\"0.4.0\",\"content_hash\":\"a06edd2aa4ff8308166eac76f759ece9858d3ff0092c6a703b511368477854d9\",\"template_id\":\"TEMPLATE-REPEAT-TARGETS\",\"event_schema_version\":\"1.0.0\",\"allowed_nodes\":[\"Sequence\",\"Repeat\",\"Action\"],\"skins\":[\"garden_light_seeds\",\"garden_inspection\"],\"diagnoses\":[\"MISSING_REPEAT\",\"EMPTY_LOOP_BODY\",\"WRONG_ACTION\",\"COUNT_TOO_SMALL\",\"COUNT_TOO_LARGE\",\"SUCCESS\"],\"session_metrics\":{\"effectiveness\":{\"transfer_first_pass_without_hint\":40,\"counterfactual_pass\":20,\"concept_revealed\":10,\"boss_debug_pass\":20,\"no_review_required\":10},\"delight\":{\"surprise_triggered\":35,\"optional_explore_completed\":35,\"post_surprise_exploration_second_cap\":30}},\"max_execution_steps\":100}",
+  "发布状态": "自动测试",
+  "自动测试通过": true,
+  "教研审核通过": false,
+  "安全审核通过": false
+}

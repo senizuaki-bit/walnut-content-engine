@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="PlayerResource" load_steps=3 format=3 uid="uid://3pmsorntgjh4"]
+
+[ext_resource type="Script" uid="uid://blsalc4owo6k2" path="res://custom_resource/player/player_resource.gd" id="1_7uyr6"]
+[ext_resource type="Texture2D" uid="uid://c2onnhy8ivnwm" path="res://assets/sprites/players/tile_0004.png" id="1_aji10"]
+
+[resource]
+script = ExtResource("1_7uyr6")
+player_id = "Cat"
+Player_name = "KEY_CAT"
+max_hp = 8.0
+move_speed = 230.0
+magic = 100.0
+icon = ExtResource("1_aji10")
+metadata/_custom_type_script = "uid://blsalc4owo6k2"

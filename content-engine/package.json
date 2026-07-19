@@ -1,0 +1,19 @@
+{
+  "name": "walnut-content-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate-content.mjs source/data-garden-loop.json",
+    "compile": "node scripts/compile-content.mjs source/data-garden-loop.json",
+    "publish": "node scripts/publish-from-feishu.mjs --force",
+    "watch": "node scripts/watch-feishu-publish.mjs",
+    "setup:feishu": "node scripts/setup-feishu-workshop.mjs",
+    "generate:skin": "node scripts/generate-skin-candidate.mjs",
+    "generate:variants": "node scripts/generate-variants.mjs",
+    "test": "node scripts/publish-from-feishu.test.mjs && node scripts/generation.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

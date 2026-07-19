@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemsResource" load_steps=3 format=3 uid="uid://dywrbd5qygci2"]
+
+[ext_resource type="Texture2D" uid="uid://0poobuecm0un" path="res://assets/sprites/items/Item_White1.png" id="1_cj5n7"]
+[ext_resource type="Script" uid="uid://boop2l6xqphv0" path="res://custom_resource/items/items_resource.gd" id="2_wyr3v"]
+
+[resource]
+script = ExtResource("2_wyr3v")
+item_id = "Potion"
+item_name = "KEY_POTION5"
+value = 4.0
+price = 4.0
+rarity = 1
+icon = ExtResource("1_cj5n7")
+discription = "KEY_POTION4_DESCRIPTION"
+metadata/_custom_type_script = "uid://boop2l6xqphv0"

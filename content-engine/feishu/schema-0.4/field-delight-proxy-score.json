@@ -1,0 +1,11 @@
+{
+  "type": "number",
+  "name": "趣味代理得分",
+  "description": "由惊喜触发、惊喜后停留与主动探索聚合；不能替代孩子主观评分；范围0-100",
+  "style": {
+    "type": "plain",
+    "precision": 0,
+    "percentage": false,
+    "thousands_separator": false
+  }
+}

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=4 format=3 uid="uid://ca2urc28gwha8"]
+
+[ext_resource type="Texture2D" uid="uid://d0unfm6gf7rj5" path="res://assets/sprites/weapons/tiles/tile_0004.png" id="1_emu0d"]
+[ext_resource type="Script" uid="uid://sxrd42tgdvgn" path="res://custom_resource/weapons/weapon_resource.gd" id="1_nu76j"]
+[ext_resource type="PackedScene" uid="uid://bnu7dqnejoofd" path="res://scenes/bullets/bullet_submachine_gun/bullet_submachine_gun.tscn" id="1_tgceh"]
+
+[resource]
+script = ExtResource("1_nu76j")
+weapon_id = "SubmachineGun"
+weapon_name = "KEY_SUBMACHINE_GUN"
+demage = 1.0
+cooldown = 0.3
+mana_cons = 1.0
+spread = 0.7
+bullet_speed = 200.0
+icon = ExtResource("1_emu0d")
+bullte_scene = ExtResource("1_tgceh")
+description = "KEY_SUBMACHINE_GUN_DESCRIPTION"
+metadata/_custom_type_script = "uid://sxrd42tgdvgn"

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemsResource" load_steps=3 format=3 uid="uid://b1lwshm7u4grm"]
+
+[ext_resource type="Texture2D" uid="uid://ca38s4prcgtct" path="res://assets/sprites/items/Item_White3.png" id="1_8xk2p"]
+[ext_resource type="Script" uid="uid://boop2l6xqphv0" path="res://custom_resource/items/items_resource.gd" id="1_vjfkx"]
+
+[resource]
+script = ExtResource("1_vjfkx")
+item_id = "Mana"
+item_name = "KEY_MANA4"
+value = 4.0
+price = 4.0
+rarity = 1
+icon = ExtResource("1_8xk2p")
+discription = "KEY_MANA4_DESCRIPTION"
+metadata/_custom_type_script = "uid://boop2l6xqphv0"

@@ -1,0 +1,75 @@
+[
+  {
+    "name": "实验ID",
+    "type": "text",
+    "description": "稳定机器ID"
+  },
+  {
+    "name": "关联单元",
+    "type": "link",
+    "link_table": "内容单元"
+  },
+  {
+    "name": "实验假设",
+    "type": "text"
+  },
+  {
+    "name": "变体A",
+    "type": "text"
+  },
+  {
+    "name": "变体B",
+    "type": "text"
+  },
+  {
+    "name": "主指标",
+    "type": "text"
+  },
+  {
+    "name": "护栏指标",
+    "type": "text"
+  },
+  {
+    "name": "目标样本量",
+    "type": "number",
+    "style": {
+      "type": "plain",
+      "precision": 0
+    }
+  },
+  {
+    "name": "实验状态",
+    "type": "select",
+    "multiple": false,
+    "options": [
+      {
+        "name": "设计中",
+        "hue": "Gray"
+      },
+      {
+        "name": "灰度中",
+        "hue": "Purple"
+      },
+      {
+        "name": "已结束",
+        "hue": "Blue"
+      },
+      {
+        "name": "扩产",
+        "hue": "Green"
+      },
+      {
+        "name": "淘汰",
+        "hue": "Red"
+      }
+    ]
+  },
+  {
+    "name": "决策规则",
+    "type": "text"
+  },
+  {
+    "name": "结论",
+    "type": "text"
+  }
+]

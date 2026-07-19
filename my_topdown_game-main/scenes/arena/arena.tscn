@@ -1,0 +1,168 @@
+[gd_scene load_steps=22 format=3 uid="uid://cimejvq3aks4b"]
+
+[ext_resource type="Texture2D" uid="uid://dy8e3xkc5qdbp" path="res://assets/sprites/interface/Tilemap/tilemap_packed.png" id="1_1qjuf"]
+[ext_resource type="Script" uid="uid://bgfg0ustgdluf" path="res://scenes/arena/arena.gd" id="1_u52cf"]
+[ext_resource type="Texture2D" uid="uid://b5o6og4r1humu" path="res://assets/sprites/weapons/tiles/tile_0025.png" id="2_6w4xk"]
+[ext_resource type="Texture2D" uid="uid://ccab6or5n1nai" path="res://assets/sprites/players/tile_0000.png" id="2_8trdl"]
+[ext_resource type="Texture2D" uid="uid://dxp7naqy4gvku" path="res://assets/sprites/interface/bar_under.png" id="3_5tue2"]
+[ext_resource type="Resource" uid="uid://cti4l8g3384sj" path="res://custom_resource/level/one/level_one.tres" id="3_6w4xk"]
+[ext_resource type="Script" uid="uid://dsr5123y5kopd" path="res://custom_resource/level/level_resourec.gd" id="3_tp84n"]
+[ext_resource type="Texture2D" uid="uid://bvr7in7eey6cb" path="res://assets/sprites/interface/bar_over.png" id="4_asdgj"]
+[ext_resource type="AudioStream" uid="uid://bjbp00yg6pnan" path="res://assets/sounds/coin-a.ogg" id="4_rhjlh"]
+[ext_resource type="Texture2D" uid="uid://cf2ypr83psjfm" path="res://assets/sprites/interface/bar_health.png" id="5_jx0ua"]
+[ext_resource type="AudioStream" uid="uid://c2lx2sn8blmns" path="res://assets/sounds/coin-b.ogg" id="5_tp84n"]
+[ext_resource type="AudioStream" uid="uid://ba0dl85nv328f" path="res://assets/sounds/coin-c.ogg" id="6_8kk48"]
+[ext_resource type="Texture2D" uid="uid://djtqrhxpxpjeg" path="res://assets/sprites/interface/bar_mana.png" id="6_jx0ua"]
+[ext_resource type="AudioStream" uid="uid://nlbj37tif8ft" path="res://assets/sounds/coin-d.ogg" id="7_wqbss"]
+[ext_resource type="Script" uid="uid://3edbrkt6kddl" path="res://scenes/arena/map_controller.gd" id="10_2ml6w"]
+[ext_resource type="LabelSettings" uid="uid://d11l46p8hxwne" path="res://theme/extra/font/font_48.tres" id="10_8kk48"]
+[ext_resource type="Script" uid="uid://d176oyvtkbktd" path="res://components/enemy_spawner/enemy_spawner.gd" id="11_xgbxb"]
+[ext_resource type="Texture2D" uid="uid://cnkiu5jecgwsr" path="res://assets/sprites/coin.png" id="12_s83md"]
+[ext_resource type="FontFile" uid="uid://cmkei0r5t77jr" path="res://assets/font/Lilian.ttf" id="13_fv88w"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_fir7s"]
+streams_count = 4
+stream_0/stream = ExtResource("4_rhjlh")
+stream_1/stream = ExtResource("5_tp84n")
+stream_2/stream = ExtResource("6_8kk48")
+stream_3/stream = ExtResource("7_wqbss")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8trdl"]
+atlas = ExtResource("1_1qjuf")
+region = Rect2(48, 0, 48, 48)
+
+[node name="Arena" type="Node2D"]
+script = ExtResource("1_u52cf")
+arena_cursor = ExtResource("2_6w4xk")
+levels = Array[ExtResource("3_tp84n")]([ExtResource("3_6w4xk")])
+coin_sound = SubResource("AudioStreamRandomizer_fir7s")
+
+[node name="Dungeon" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="EnemySpawner" type="Node" parent="." node_paths=PackedStringArray("arena")]
+unique_name_in_owner = true
+script = ExtResource("11_xgbxb")
+arena = NodePath("..")
+metadata/_custom_type_script = "uid://d176oyvtkbktd"
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="Title" type="Label" parent="UILayer"]
+unique_name_in_owner = true
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 8.0
+offset_bottom = 31.0
+grow_horizontal = 2
+text = "1-1"
+label_settings = ExtResource("10_8kk48")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerUI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 128.0
+offset_bottom = 88.0
+
+[node name="PlayerBackground" type="TextureRect" parent="UILayer/PlayerUI"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 48.0
+texture = SubResource("AtlasTexture_8trdl")
+
+[node name="PlayerIcon" type="TextureRect" parent="UILayer/PlayerUI/PlayerBackground"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(38, 38)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -19.0
+offset_top = -20.0
+offset_right = 19.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_8trdl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HealthBar" type="TextureProgressBar" parent="UILayer/PlayerUI"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 0
+offset_top = 52.0
+offset_right = 80.0
+offset_bottom = 64.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+nine_patch_stretch = true
+stretch_margin_left = 3
+stretch_margin_right = 3
+texture_under = ExtResource("3_5tue2")
+texture_over = ExtResource("4_asdgj")
+texture_progress = ExtResource("5_jx0ua")
+
+[node name="ManaBar" type="TextureProgressBar" parent="UILayer/PlayerUI"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 0
+offset_top = 66.0
+offset_right = 80.0
+offset_bottom = 78.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+nine_patch_stretch = true
+stretch_margin_left = 3
+stretch_margin_right = 3
+texture_under = ExtResource("3_5tue2")
+texture_over = ExtResource("4_asdgj")
+texture_progress = ExtResource("6_jx0ua")
+
+[node name="MapController" type="Control" parent="UILayer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 128.0
+grow_horizontal = 0
+script = ExtResource("10_2ml6w")
+
+[node name="Coins" type="HBoxContainer" parent="UILayer"]
+custom_minimum_size = Vector2(40, 20)
+offset_left = 8.0
+offset_top = 86.0
+offset_right = 48.0
+offset_bottom = 106.0
+theme_override_constants/separation = 1
+
+[node name="TextureRect" type="TextureRect" parent="UILayer/Coins"]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("12_s83md")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TotalCoins" type="Label" parent="UILayer/Coins"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("13_fv88w")
+text = "0.0"
+vertical_alignment = 1

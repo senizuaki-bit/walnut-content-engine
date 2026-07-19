@@ -1,0 +1,63 @@
+[
+  {
+    "name": "提示ID",
+    "type": "text",
+    "description": "稳定机器ID"
+  },
+  {
+    "name": "关联单元",
+    "type": "link",
+    "link_table": "内容单元"
+  },
+  {
+    "name": "适用阶段",
+    "type": "select",
+    "multiple": false,
+    "options": [
+      {
+        "name": "主任务",
+        "hue": "Blue"
+      },
+      {
+        "name": "迁移",
+        "hue": "Green"
+      },
+      {
+        "name": "解释",
+        "hue": "Purple"
+      }
+    ]
+  },
+  {
+    "name": "提示等级",
+    "type": "number",
+    "style": {
+      "type": "plain",
+      "precision": 0
+    }
+  },
+  {
+    "name": "触发条件",
+    "type": "text"
+  },
+  {
+    "name": "教学意图",
+    "type": "text"
+  },
+  {
+    "name": "提示模板",
+    "type": "text"
+  },
+  {
+    "name": "允许显式答案",
+    "type": "checkbox"
+  },
+  {
+    "name": "下一步动作",
+    "type": "text"
+  },
+  {
+    "name": "禁用内容",
+    "type": "text"
+  }
+]

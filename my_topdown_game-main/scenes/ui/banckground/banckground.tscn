@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://c362arkl0oiht"]
+
+[ext_resource type="Shader" uid="uid://cpkigu5f3e85r" path="res://theme/gdshader/background.gdshader" id="1_acjbg"]
+[ext_resource type="Texture2D" uid="uid://bjnh3sonwurje" path="res://assets/sprites/background_tiled.png" id="2_gsqcl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r70wa"]
+shader = ExtResource("1_acjbg")
+shader_parameter/speed = 0.5
+
+[node name="BanckgroundLayer" type="CanvasLayer"]
+layer = -1
+
+[node name="Banckground" type="TextureRect" parent="."]
+editor_description = "背景"
+material = SubResource("ShaderMaterial_r70wa")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_gsqcl")
+expand_mode = 1
+stretch_mode = 1

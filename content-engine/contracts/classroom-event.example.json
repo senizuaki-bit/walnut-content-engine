@@ -1,0 +1,20 @@
+{
+  "event_id": "evt_01JEXAMPLE",
+  "occurred_at": "2026-07-19T13:30:00+08:00",
+  "anonymous_student_id": "walnut_24_hex_chars",
+  "session_id": "session_random_id",
+  "unit_id": "UNIT-DATA-GARDEN-LOOP",
+  "version": "0.2.0",
+  "content_hash": "sha256_of_compiled_package",
+  "experiment_id": "EXP-DG-CAUSAL-FEEDBACK-01",
+  "variant": "B",
+  "event_name": "program_run",
+  "stage": "program",
+  "payload": {
+    "repeat_count": 3,
+    "target_count": 4,
+    "result": "under",
+    "attempt_index": 1,
+    "hint_level_before_run": 0
+  }
+}

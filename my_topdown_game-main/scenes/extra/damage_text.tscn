@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0tpbghu8sfq7"]
+
+[ext_resource type="Script" uid="uid://dlixip8qht1sh" path="res://scenes/extra/damage_text.gd" id="1_hdj2s"]
+[ext_resource type="LabelSettings" uid="uid://dpegkl2vv52qo" path="res://theme/extra/font/font_16.tres" id="1_k5fkf"]
+
+[node name="DamageText" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_hdj2s")
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 0
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "10"
+label_settings = ExtResource("1_k5fkf")

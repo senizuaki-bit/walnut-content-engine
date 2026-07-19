@@ -1,0 +1,422 @@
+{
+  "unit_id": "UNIT-DATA-GARDEN-LOOP",
+  "version": "0.6.0",
+  "content_hash": "9b43fafc848cfa0be260b56fef013859da9b7d468579d68b7475b747d3ae8584",
+  "generated_at": "2026-07-19T14:41:35.782Z",
+  "audience": {
+    "age_band": "8-12",
+    "lesson_minutes": 45
+  },
+  "concept": {
+    "concept_id": "CONCEPT-LOOP-COUNT",
+    "name": "计数循环",
+    "cognitive_essence": "先从世界中感知一次动作与一个目标的对应关系，再用重复结构表达规律，通过反事实与陌生迁移形成可解释的循环概念。",
+    "mastery": [
+      "能预测一次生长只影响一颗光种",
+      "能编排重复结构并逐步解释执行轨迹",
+      "能通过把 5 改成 4 验证次数对世界结果的影响",
+      "能在陌生巡检器中无提示迁移同一结构",
+      "能把世界直觉对应到积木结构与 C 语言 for 代码",
+      "能根据真实执行轨迹修复 Boss 攻击条件"
+    ]
+  },
+  "misconceptions": [
+    {
+      "id": "MIS-LOOP-UNDER",
+      "signal": "repeat_count < target_count",
+      "meaning": "未建立目标数量与执行次数的一一对应",
+      "intervention": "保留已完成结果，突出未执行目标并引导观察世界偏差"
+    },
+    {
+      "id": "MIS-LOOP-OVER",
+      "signal": "repeat_count > target_count",
+      "meaning": "未理解目标耗尽后的边界",
+      "intervention": "让多出的执行产生可理解、无惩罚的溢出反馈"
+    },
+    {
+      "id": "MIS-LOOP-ACTION",
+      "signal": "action_not_nested",
+      "meaning": "尚未把一次动作放进重复结构",
+      "intervention": "先运行一次动作，再让学生把动作拖进结构"
+    },
+    {
+      "id": "MIS-BOSS-CONDITION",
+      "signal": "attack_when_shielded",
+      "meaning": "忽略状态条件，在护盾阶段仍执行攻击",
+      "intervention": "回放四拍轨迹并指向条件块，不提供选择题答案"
+    }
+  ],
+  "world": {
+    "theme": "太空",
+    "main_skin_id": "skin_space",
+    "transfer_skin_id": "garden_inspection",
+    "main_context": "5_space_target",
+    "transfer_context": "6_target_patrol_device",
+    "main_target": 5,
+    "transfer_target": 6,
+    "action": "grow",
+    "under_feedback": "last_seed_dormant",
+    "over_feedback": "overflow_ripple",
+    "exact_feedback": "5_space_target_completed_in_sequence"
+  },
+  "program_semantics": {
+    "max_execution_steps": 100,
+    "allowed_nodes": [
+      "Sequence",
+      "Repeat",
+      "Action"
+    ]
+  },
+  "templates": [
+    {
+      "template_id": "TEMPLATE-REPEAT-TARGETS",
+      "name": "对 N 个目标依次执行同一动作",
+      "allowed_nodes": [
+        "Sequence",
+        "Repeat",
+        "Action"
+      ],
+      "goal": "all_targets_completed",
+      "expected_structure": {
+        "type": "Repeat",
+        "count_relation": "equals_target_count",
+        "body_type": "Action"
+      }
+    }
+  ],
+  "world_actions": [
+    {
+      "action_id": "grow_next_seed",
+      "from_state": "dormant",
+      "to_state": "active",
+      "selector": "first_incomplete",
+      "no_target_feedback": "overflow_ripple"
+    },
+    {
+      "action_id": "inspect_next_target",
+      "from_state": "unchecked",
+      "to_state": "checked",
+      "selector": "first_incomplete",
+      "no_target_feedback": "overflow_ripple"
+    }
+  ],
+  "world_skins": [
+    {
+      "skin_id": "skin_space",
+      "template_id": "TEMPLATE-REPEAT-TARGETS",
+      "entity_type": "space_target",
+      "target_count": 5,
+      "initial_state": "dormant",
+      "completed_state": "active",
+      "action_id": "grow_next_seed",
+      "objective": "使用“校准星轨导航仪”，让每个星轨导航仪依次完成变化",
+      "display": {
+        "world_name": "银河漫游站",
+        "entity_name": "星轨导航仪",
+        "action_name": "校准星轨导航仪",
+        "console_name": "太空校准操作台",
+        "objective": "使用“校准星轨导航仪”，让每个星轨导航仪依次完成变化",
+        "scenario_frame": "你来到太空银河漫游站，要给导航仪完成校准哦"
+      },
+      "assets": {
+        "background_before": "../skins/skin_space/background_before.png",
+        "background_after": "../skins/skin_space/background_after.png",
+        "target_entity": "../skins/skin_space/target_entity.png",
+        "console": "../skins/skin_space/console.png",
+        "npc": "../skins/skin_space/npc.png"
+      }
+    },
+    {
+      "skin_id": "garden_inspection",
+      "template_id": "TEMPLATE-REPEAT-TARGETS",
+      "entity_type": "inspection_target",
+      "target_count": 6,
+      "initial_state": "unchecked",
+      "completed_state": "checked",
+      "action_id": "inspect_next_target",
+      "objective": "让陌生巡检器依次检查 6 个目标",
+      "display": {
+        "world_name": "陌生巡检站",
+        "entity_name": "巡检目标",
+        "action_name": "巡检",
+        "console_name": "巡检控制台",
+        "objective": "让陌生巡检器依次检查 6 个目标",
+        "scenario_frame": "把同一结构迁移到陌生巡检器"
+      }
+    }
+  ],
+  "transfer_variants": [
+    {
+      "variant_id": "VAR-LOOP-UNDER-TIDAL-4",
+      "misconception_id": "MIS-LOOP-UNDER",
+      "skin": {
+        "entity_type": "tidal_beacon",
+        "entity_name": "潮汐浮标",
+        "action_name": "校准浮标",
+        "objective": "让所有潮汐浮标恢复稳定",
+        "scenario_frame": "在珊瑚回声湾依次校准每一个潮汐浮标"
+      },
+      "params": {
+        "target_count": 4
+      },
+      "expected": {
+        "probe_count": 3,
+        "expected_diagnosis": {
+          "exact": "SUCCESS",
+          "under": "COUNT_TOO_SMALL",
+          "over": "COUNT_TOO_LARGE"
+        }
+      }
+    },
+    {
+      "variant_id": "VAR-LOOP-OVER-ORBIT-6",
+      "misconception_id": "MIS-LOOP-OVER",
+      "skin": {
+        "entity_type": "orbit_beacon",
+        "entity_name": "轨道信标",
+        "action_name": "同步信标",
+        "objective": "让整条星环航线恢复同步",
+        "scenario_frame": "沿星环依次同步每一个轨道信标"
+      },
+      "params": {
+        "target_count": 6
+      },
+      "expected": {
+        "probe_count": 3,
+        "expected_diagnosis": {
+          "exact": "SUCCESS",
+          "under": "COUNT_TOO_SMALL",
+          "over": "COUNT_TOO_LARGE"
+        }
+      }
+    },
+    {
+      "variant_id": "VAR-LOOP-ACTION-OASIS-5",
+      "misconception_id": "MIS-LOOP-ACTION",
+      "skin": {
+        "entity_type": "oasis_spring",
+        "entity_name": "绿洲泉眼",
+        "action_name": "疏通泉眼",
+        "objective": "让古老水路重新流动",
+        "scenario_frame": "沿古老水路依次疏通每一个绿洲泉眼"
+      },
+      "params": {
+        "target_count": 5
+      },
+      "expected": {
+        "probe_count": 3,
+        "expected_diagnosis": {
+          "exact": "SUCCESS",
+          "under": "COUNT_TOO_SMALL",
+          "over": "COUNT_TOO_LARGE"
+        }
+      }
+    }
+  ],
+  "asset_integrity": {
+    "skin_space/background_after": {
+      "path": "../skins/skin_space/background_after.png",
+      "sha256": "8bafc5203a298ffc4272a82e2e9b30b3007556928fbfeb73de88ff938c2fdfa8",
+      "width": 2560,
+      "height": 1440,
+      "bytes": 1539818,
+      "source_name": "background_after.png"
+    },
+    "skin_space/background_before": {
+      "path": "../skins/skin_space/background_before.png",
+      "sha256": "c26f067d752dd5bea9f97251f08d4005a68905ea7d9c5678571e3f0f48504d5f",
+      "width": 2560,
+      "height": 1440,
+      "bytes": 1655528,
+      "source_name": "background_before.png"
+    },
+    "skin_space/console": {
+      "path": "../skins/skin_space/console.png",
+      "sha256": "4e6c444cf398a197032020101232c10245bb2b29fd4254ab4b3c70a67b7beeb4",
+      "width": 768,
+      "height": 768,
+      "bytes": 351464,
+      "source_name": "console.png"
+    },
+    "skin_space/npc": {
+      "path": "../skins/skin_space/npc.png",
+      "sha256": "6bebba17b2274cb1eaeb57851554ac71d3dec5f12cbeea6fa9fcc0ea33a02d1b",
+      "width": 768,
+      "height": 768,
+      "bytes": 211681,
+      "source_name": "npc.png"
+    },
+    "skin_space/target_entity": {
+      "path": "../skins/skin_space/target_entity.png",
+      "sha256": "433a07aa792a8e341ceee6125902f70b3ea365d8ec44f2e915652d0d8f758bd5",
+      "width": 768,
+      "height": 768,
+      "bytes": 353913,
+      "source_name": "target_entity.png"
+    }
+  },
+  "diagnostic_rules": [
+    {
+      "diagnosis_id": "MISSING_REPEAT",
+      "priority": 10,
+      "condition": "program_has_no_repeat"
+    },
+    {
+      "diagnosis_id": "EMPTY_LOOP_BODY",
+      "priority": 20,
+      "condition": "repeat_body_empty"
+    },
+    {
+      "diagnosis_id": "WRONG_ACTION",
+      "priority": 30,
+      "condition": "action_not_bound_to_skin"
+    },
+    {
+      "diagnosis_id": "COUNT_TOO_SMALL",
+      "priority": 40,
+      "condition": "completed_targets_below_target"
+    },
+    {
+      "diagnosis_id": "COUNT_TOO_LARGE",
+      "priority": 50,
+      "condition": "action_without_target"
+    },
+    {
+      "diagnosis_id": "SUCCESS",
+      "priority": 100,
+      "condition": "goal_met_with_expected_structure"
+    }
+  ],
+  "stages": [
+    {
+      "id": "observe",
+      "purpose": "看看太空站里有几台星轨导航仪，校准的操作按钮在哪里"
+    },
+    {
+      "id": "predict",
+      "purpose": "猜一猜依次校准完所有导航仪后，飞船的航线会不会显示出来"
+    },
+    {
+      "id": "single_action",
+      "purpose": "试着点一点，给1台星轨导航仪完成校准操作"
+    },
+    {
+      "id": "program",
+      "purpose": "拼出正确的指令块，让程序能依次给所有导航仪做校准"
+    },
+    {
+      "id": "trace",
+      "purpose": "跟着程序运行的步骤走，看看每一步校准了哪台星轨导航仪"
+    },
+    {
+      "id": "counterfactual",
+      "purpose": "要是少写了一次校准指令，想一想会有几台导航仪没被校准呀"
+    },
+    {
+      "id": "transfer",
+      "purpose": "如果下次要校准8台星云信号接收器，你知道该怎么改程序吗"
+    },
+    {
+      "id": "concept_name",
+      "purpose": "重复执行指令"
+    },
+    {
+      "id": "debug_boss",
+      "purpose": "找一找程序里是不是漏了校准指令，或者多写了多余的步骤"
+    },
+    {
+      "id": "explain",
+      "purpose": "给小伙伴说说，你是怎么让程序自动校准完所有星轨导航仪的"
+    }
+  ],
+  "hint_policy": [
+    {
+      "level": 1,
+      "intent": "引导观察场景内容",
+      "template": "小朋友先仔细看看太空站里一共有多少台{main_entity}呀？",
+      "reveal_answer": false,
+      "next_action": "数一数场景里的{main_entity}数量，再看看动作按钮是哪个"
+    },
+    {
+      "level": 2,
+      "intent": "引导回忆动作要求",
+      "template": "我们要对每台{main_entity}做什么操作才能帮到飞船呀？",
+      "reveal_answer": false,
+      "next_action": "想想{main_action}这个操作要用到哪个指令块哦"
+    },
+    {
+      "level": 3,
+      "intent": "引导思考指令结构",
+      "template": "我们要给好几台{main_entity}依次做操作，用什么指令结构会更方便呀？",
+      "reveal_answer": false,
+      "next_action": "试试用可以重复执行的指令块来编排程序哦"
+    },
+    {
+      "level": 4,
+      "intent": "引导核对指令次数",
+      "template": "再数一遍{main_entity}的数量，看看你设置的重复次数对不对呀？",
+      "reveal_answer": false,
+      "next_action": "调整重复执行的次数，保证每台{main_entity}都能被操作到"
+    },
+    {
+      "level": 5,
+      "intent": "直接告知正确答案",
+      "template": "你需要设置重复执行{main_target}次{main_action}的指令，就能完成任务啦",
+      "reveal_answer": true,
+      "needs_review": true,
+      "next_action": "修改程序里的重复次数，运行看看效果吧"
+    }
+  ],
+  "surprise": {
+    "id": "garden_restore",
+    "trigger": "main_program_exact",
+    "duration_seconds": 1.8,
+    "causal_copy": "你每完成一次校准星轨导航仪，那台星轨导航仪就会亮起蓝色的指示灯，所有导航仪都校准完成后，飞船的星图航线就会完整显示在大屏幕上啦",
+    "must_be_student_triggered": true
+  },
+  "evidence": {
+    "event_schema_version": "1.0.0",
+    "primary": "transfer_first_pass_without_hint",
+    "secondary": [
+      "counterfactual_pass",
+      "concept_code_mapping_seen",
+      "boss_debug_pass",
+      "delayed_retest_pass"
+    ],
+    "delight": [
+      "post_surprise_voluntary_exploration_seconds",
+      "optional_explore_completed",
+      "child_surprise_rating"
+    ],
+    "events": [
+      "session_started",
+      "stage_entered",
+      "prediction_submitted",
+      "program_run",
+      "hint_requested",
+      "hint_delivered",
+      "surprise_triggered",
+      "counterfactual_run",
+      "transfer_run",
+      "concept_revealed",
+      "boss_debug_run",
+      "needs_review_marked",
+      "optional_explore_completed",
+      "session_completed"
+    ],
+    "session_metrics": {
+      "effectiveness": {
+        "transfer_first_pass_without_hint": 40,
+        "counterfactual_pass": 20,
+        "concept_revealed": 10,
+        "boss_debug_pass": 20,
+        "no_review_required": 10
+      },
+      "delight": {
+        "surprise_triggered": 35,
+        "optional_explore_completed": 35,
+        "post_surprise_exploration_second_cap": 30
+      }
+    }
+  }
+}

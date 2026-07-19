@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=4 format=3 uid="uid://bcdx2d0wr0d8c"]
+
+[ext_resource type="Script" uid="uid://sxrd42tgdvgn" path="res://custom_resource/weapons/weapon_resource.gd" id="1_h2s5e"]
+[ext_resource type="PackedScene" uid="uid://b4twvignhwmb8" path="res://scenes/bullets/bullet_machine_gun/bullet_machine_gun.tscn" id="1_ixwk0"]
+[ext_resource type="Texture2D" uid="uid://cgch73n7h4u3r" path="res://assets/sprites/weapons/tiles/tile_0006.png" id="1_stlmu"]
+
+[resource]
+script = ExtResource("1_h2s5e")
+weapon_id = "MachineGun"
+weapon_name = "KEY_MACHINE_GUN"
+demage = 1.0
+cooldown = 0.15
+mana_cons = 0.7
+spread = 7.0
+bullet_speed = 300.0
+icon = ExtResource("1_stlmu")
+bullte_scene = ExtResource("1_ixwk0")
+description = "KEY_MACHINE_GUN_DESCRIPTION"
+metadata/_custom_type_script = "uid://sxrd42tgdvgn"

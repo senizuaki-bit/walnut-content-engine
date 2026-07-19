@@ -1,0 +1,276 @@
+{
+  "unit_id": "UNIT-DATA-GARDEN-LOOP",
+  "version": "0.6.10",
+  "content_hash": "25cba75472e28dda073c4470cd31db6cb6767e888ed7dda64af53b784cdf461e",
+  "generated_at": "2026-07-19T13:35:32.473Z",
+  "audience": {
+    "age_band": "8-12",
+    "lesson_minutes": 45
+  },
+  "concept_id": "CONCEPT-LOOP-COUNT",
+  "world": {
+    "theme": "data_garden",
+    "main_skin_id": "garden_light_seeds",
+    "transfer_skin_id": "garden_inspection",
+    "main_context": "5_dormant_light_seeds",
+    "transfer_context": "6_target_patrol_device",
+    "main_target": 5,
+    "transfer_target": 6,
+    "action": "grow",
+    "under_feedback": "last_seed_dormant",
+    "over_feedback": "overflow_ripple",
+    "exact_feedback": "5_seeds_light_in_sequence"
+  },
+  "world_skins": [
+    {
+      "skin_id": "garden_light_seeds",
+      "display": {
+        "world_name": "数据花园",
+        "entity_name": "光种",
+        "action_name": "生长",
+        "console_name": "休眠光种控制台",
+        "objective": "让 5 颗光种全部醒来",
+        "scenario_frame": "修复失灵的花园法则，让休眠光种依次醒来"
+      },
+      "target_count": 5
+    },
+    {
+      "skin_id": "garden_inspection",
+      "display": {
+        "world_name": "陌生巡检站",
+        "entity_name": "巡检目标",
+        "action_name": "巡检",
+        "console_name": "巡检控制台",
+        "objective": "让陌生巡检器依次检查 6 个目标",
+        "scenario_frame": "把同一结构迁移到陌生巡检器"
+      },
+      "target_count": 6
+    }
+  ],
+  "hints": [
+    {
+      "level": 1,
+      "intent": "鼓励求助并确认当前世界目标",
+      "template": "你愿意求助很好。先确认目标：你希望所有光种最后都醒来，对吗？",
+      "reveal_answer": false,
+      "next_action": "确认当前目标"
+    },
+    {
+      "level": 2,
+      "intent": "引导学生观察执行结果与世界目标之间的偏差",
+      "template": "观察运行结果：哪一颗没有按预期变化？比较亮起数量和目标数量。",
+      "reveal_answer": false,
+      "next_action": "观察未变化的目标"
+    },
+    {
+      "level": 3,
+      "intent": "根据确定性诊断缩小到可能出错的程序区域",
+      "template": "“生长”动作已经有效，可能出错的是橙色重复结构里的执行次数。",
+      "reveal_answer": false,
+      "next_action": "检查执行次数"
+    },
+    {
+      "level": 4,
+      "intent": "提供部分结构和真实执行轨迹，保留最后推断",
+      "template": "看执行轨迹：每执行一次只亮一颗。补齐最后一颗需要的那一步。",
+      "reveal_answer": false,
+      "next_action": "沿轨迹补齐一步"
+    },
+    {
+      "level": 5,
+      "intent": "给出兜底答案并标记复练，仍保留学生执行权",
+      "template": "完整结构是“重复5次：生长”。这次会标记复练，仍由你亲手修改并运行。",
+      "reveal_answer": true,
+      "needs_review": true,
+      "next_action": "学生亲手修改并运行"
+    }
+  ],
+  "diagnostic_rules": [
+    {
+      "diagnosis_id": "MISSING_REPEAT",
+      "priority": 10,
+      "condition": "program_has_no_repeat"
+    },
+    {
+      "diagnosis_id": "EMPTY_LOOP_BODY",
+      "priority": 20,
+      "condition": "repeat_body_empty"
+    },
+    {
+      "diagnosis_id": "WRONG_ACTION",
+      "priority": 30,
+      "condition": "action_not_bound_to_skin"
+    },
+    {
+      "diagnosis_id": "COUNT_TOO_SMALL",
+      "priority": 40,
+      "condition": "completed_targets_below_target"
+    },
+    {
+      "diagnosis_id": "COUNT_TOO_LARGE",
+      "priority": 50,
+      "condition": "action_without_target"
+    },
+    {
+      "diagnosis_id": "SUCCESS",
+      "priority": 100,
+      "condition": "goal_met_with_expected_structure"
+    }
+  ],
+  "evidence": {
+    "event_schema_version": "1.0.0",
+    "primary": "transfer_first_pass_without_hint",
+    "secondary": [
+      "counterfactual_pass",
+      "concept_code_mapping_seen",
+      "boss_debug_pass",
+      "delayed_retest_pass"
+    ],
+    "delight": [
+      "post_surprise_voluntary_exploration_seconds",
+      "optional_explore_completed",
+      "child_surprise_rating"
+    ],
+    "events": [
+      "session_started",
+      "stage_entered",
+      "prediction_submitted",
+      "program_run",
+      "hint_requested",
+      "hint_delivered",
+      "surprise_triggered",
+      "counterfactual_run",
+      "transfer_run",
+      "concept_revealed",
+      "boss_debug_run",
+      "needs_review_marked",
+      "optional_explore_completed",
+      "session_completed"
+    ],
+    "session_metrics": {
+      "effectiveness": {
+        "transfer_first_pass_without_hint": 40,
+        "counterfactual_pass": 20,
+        "concept_revealed": 10,
+        "boss_debug_pass": 20,
+        "no_review_required": 10
+      },
+      "delight": {
+        "surprise_triggered": 35,
+        "optional_explore_completed": 35,
+        "post_surprise_exploration_second_cap": 30
+      }
+    }
+  },
+  "transfer_variants": [
+    {
+      "variant_id": "VAR-LOOP-UNDER-SPACE-4",
+      "misconception_id": "MIS-LOOP-UNDER",
+      "skin": {
+        "entity_type": "space_transfer_target",
+        "entity_name": "月球陨石坑观测仪",
+        "action_name": "调试月球陨石坑观测仪",
+        "objective": "完成所有月球陨石坑观测仪的参数校准，确保能清晰拍摄月球表面陨石坑细节",
+        "scenario_frame": "你现在在月球科考站工作，站长安排你调试月球陨石坑观测仪，每台观测仪调试完成后会亮起蓝色就绪灯，你需要操作控制台完成对应任务哦。"
+      },
+      "params": {
+        "target_count": 4
+      },
+      "expected": {
+        "probe_count": 3,
+        "expected_diagnosis": {
+          "exact": "SUCCESS",
+          "under": "COUNT_TOO_SMALL",
+          "over": "COUNT_TOO_LARGE"
+        }
+      }
+    },
+    {
+      "variant_id": "VAR-LOOP-OVER-SPACE-4",
+      "misconception_id": "MIS-LOOP-OVER",
+      "skin": {
+        "entity_type": "space_transfer_target",
+        "entity_name": "行星信标",
+        "action_name": "校准行星信标",
+        "objective": "为深空探测航线做准备，需要你校准行星信标来点亮导航节点",
+        "scenario_frame": "你现在身处月面观测站，每完成一次校准行星信标操作，对应的行星信标就会亮起稳定的导航光，全部亮起后再操作的话观测站会发出提示音但不会有新的信标点亮"
+      },
+      "params": {
+        "target_count": 4
+      },
+      "expected": {
+        "probe_count": 3,
+        "expected_diagnosis": {
+          "exact": "SUCCESS",
+          "under": "COUNT_TOO_SMALL",
+          "over": "COUNT_TOO_LARGE"
+        }
+      }
+    },
+    {
+      "variant_id": "VAR-LOOP-ACTION-SPACE-4",
+      "misconception_id": "MIS-LOOP-ACTION",
+      "skin": {
+        "entity_type": "space_transfer_target",
+        "entity_name": "太阳能帆板",
+        "action_name": "擦拭太阳能帆板",
+        "objective": "完成所有太阳能帆板的清洁工作，保障空间站供电稳定",
+        "scenario_frame": "空间站外的4块太阳能帆板落了太空尘埃，小宇航员每次完成1次擦拭太阳能帆板的操作，就能清理干净1块帆板，需要把所有落灰的帆板都清理完毕。"
+      },
+      "params": {
+        "target_count": 4
+      },
+      "expected": {
+        "probe_count": 3,
+        "expected_diagnosis": {
+          "exact": "SUCCESS",
+          "under": "COUNT_TOO_SMALL",
+          "over": "COUNT_TOO_LARGE"
+        }
+      }
+    }
+  ],
+  "misconceptions": [
+    {
+      "id": "MIS-LOOP-UNDER",
+      "signal": "repeat_count < target_count",
+      "intervention": "保留已完成结果，突出未执行目标并引导观察世界偏差"
+    },
+    {
+      "id": "MIS-LOOP-OVER",
+      "signal": "repeat_count > target_count",
+      "intervention": "让多出的执行产生可理解、无惩罚的溢出反馈"
+    },
+    {
+      "id": "MIS-LOOP-ACTION",
+      "signal": "action_not_nested",
+      "intervention": "先运行一次动作，再让学生把动作拖进结构"
+    },
+    {
+      "id": "MIS-BOSS-CONDITION",
+      "signal": "attack_when_shielded",
+      "intervention": "回放四拍轨迹并指向条件块，不提供选择题答案"
+    }
+  ],
+  "safety": {
+    "ai_can_write_core_code": false,
+    "ai_can_decide_correctness": false,
+    "ai_roles": [
+      "onboarding",
+      "graded_hint",
+      "reflection",
+      "long_term_growth_record"
+    ],
+    "levels_before_answer": 4,
+    "answer_requires_review_flag": true,
+    "student_identifier": "random_session_hash",
+    "forbidden": [
+      "姓名",
+      "学校",
+      "联系方式",
+      "羞辱",
+      "同伴比较",
+      "制造焦虑"
+    ]
+  }
+}

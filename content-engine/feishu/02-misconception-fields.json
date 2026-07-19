@@ -1,0 +1,89 @@
+[
+  {
+    "name": "误区ID",
+    "type": "text",
+    "description": "稳定机器ID"
+  },
+  {
+    "name": "关联概念",
+    "type": "link",
+    "link_table": "知识概念"
+  },
+  {
+    "name": "误区描述",
+    "type": "text"
+  },
+  {
+    "name": "可观察信号",
+    "type": "text"
+  },
+  {
+    "name": "误区分类",
+    "type": "select",
+    "multiple": false,
+    "options": [
+      {
+        "name": "操作",
+        "hue": "Gray"
+      },
+      {
+        "name": "语法",
+        "hue": "Blue"
+      },
+      {
+        "name": "概念",
+        "hue": "Orange"
+      },
+      {
+        "name": "边界",
+        "hue": "Purple"
+      }
+    ]
+  },
+  {
+    "name": "最小干预",
+    "type": "text"
+  },
+  {
+    "name": "禁止动作",
+    "type": "text"
+  },
+  {
+    "name": "严重度",
+    "type": "select",
+    "multiple": false,
+    "options": [
+      {
+        "name": "低",
+        "hue": "Gray"
+      },
+      {
+        "name": "中",
+        "hue": "Orange"
+      },
+      {
+        "name": "高",
+        "hue": "Red"
+      }
+    ]
+  },
+  {
+    "name": "验证状态",
+    "type": "select",
+    "multiple": false,
+    "options": [
+      {
+        "name": "假设",
+        "hue": "Gray"
+      },
+      {
+        "name": "课堂观察",
+        "hue": "Orange"
+      },
+      {
+        "name": "已验证",
+        "hue": "Green"
+      }
+    ]
+  }
+]

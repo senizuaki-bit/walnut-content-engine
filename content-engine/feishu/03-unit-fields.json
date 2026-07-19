@@ -1,0 +1,99 @@
+[
+  {
+    "name": "单元ID",
+    "type": "text",
+    "description": "知识—体验—评价单元的稳定机器ID"
+  },
+  {
+    "name": "关联概念",
+    "type": "link",
+    "link_table": "知识概念"
+  },
+  {
+    "name": "版本",
+    "type": "text"
+  },
+  {
+    "name": "单元名称",
+    "type": "text"
+  },
+  {
+    "name": "世界机制",
+    "type": "text"
+  },
+  {
+    "name": "任务链",
+    "type": "text"
+  },
+  {
+    "name": "迁移任务",
+    "type": "text"
+  },
+  {
+    "name": "惊喜因果",
+    "type": "text"
+  },
+  {
+    "name": "学习证据",
+    "type": "text"
+  },
+  {
+    "name": "课堂节奏",
+    "type": "text"
+  },
+  {
+    "name": "配置JSON",
+    "type": "text",
+    "description": "通过校验后可编译给 Godot/AI 服务的配置"
+  },
+  {
+    "name": "发布状态",
+    "type": "select",
+    "multiple": false,
+    "options": [
+      {
+        "name": "草稿",
+        "hue": "Gray"
+      },
+      {
+        "name": "自动测试",
+        "hue": "Blue"
+      },
+      {
+        "name": "教研审核",
+        "hue": "Orange"
+      },
+      {
+        "name": "灰度",
+        "hue": "Purple"
+      },
+      {
+        "name": "正式",
+        "hue": "Green"
+      },
+      {
+        "name": "淘汰",
+        "hue": "Red"
+      }
+    ]
+  },
+  {
+    "name": "自动测试通过",
+    "type": "checkbox"
+  },
+  {
+    "name": "教研审核通过",
+    "type": "checkbox"
+  },
+  {
+    "name": "安全审核通过",
+    "type": "checkbox"
+  },
+  {
+    "name": "更新时间",
+    "type": "updated_at",
+    "style": {
+      "format": "yyyy-MM-dd HH:mm"
+    }
+  }
+]

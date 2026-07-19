@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=3 format=3 uid="uid://brhbeo7e53hds"]
+
+[ext_resource type="Script" uid="uid://sxrd42tgdvgn" path="res://custom_resource/weapons/weapon_resource.gd" id="1_6bcoo"]
+[ext_resource type="Texture2D" uid="uid://bajyn0iqwus2x" path="res://assets/sprites/weapons/tiles/tile_0018.png" id="1_pbrnx"]
+
+[resource]
+script = ExtResource("1_6bcoo")
+weapon_id = "Sword"
+weapon_name = "KEY_SWORD"
+demage = 0.6
+cooldown = 0.15
+mana_cons = 0.1
+icon = ExtResource("1_pbrnx")
+metadata/_custom_type_script = "uid://sxrd42tgdvgn"

@@ -1,0 +1,13 @@
+{
+  "base_url": "https://hcn3j6gp4127.feishu.cn/base/A7IcbT6oHaUKXIsAjHrcrlhinwg",
+  "base_token": "A7IcbT6oHaUKXIsAjHrcrlhinwg",
+  "unit_id": "UNIT-DATA-GARDEN-LOOP",
+  "unit_record_id": "recvpNewUffa1G",
+  "poll_interval_ms": 3000,
+  "tables": {
+    "content_units": "tblt7ngBofsdRsYk",
+    "misconceptions": "tblPz1wqhXIw0Je8",
+    "hints": "tblN3OIoxi1HbJq6",
+    "classroom_evidence": "tblmEnpQOZDuyMAX"
+  }
+}
