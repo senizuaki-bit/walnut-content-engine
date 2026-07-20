@@ -49,6 +49,30 @@ var selected_weapon: WeaponResource
 
 func _ready() -> void:
 	load_date()
+	apply_audio_settings()
+
+
+func is_audio_enabled() -> bool:
+	return bool(settings.get("music", true)) and bool(settings.get("sfx", true))
+
+
+func set_audio_enabled(is_on: bool, persist: bool = true) -> void:
+	settings["music"] = is_on
+	settings["sfx"] = is_on
+	apply_audio_settings()
+	if persist:
+		save_date()
+
+
+func apply_audio_settings() -> void:
+	_set_audio_bus_enabled("Music", bool(settings.get("music", true)))
+	_set_audio_bus_enabled("SFX", bool(settings.get("sfx", true)))
+
+
+func _set_audio_bus_enabled(bus_name: String, is_on: bool) -> void:
+	var bus_index := AudioServer.get_bus_index(bus_name)
+	if bus_index >= 0:
+		AudioServer.set_bus_mute(bus_index, not is_on)
 
 
 func create_explosion(position:Vector2) -> void:
