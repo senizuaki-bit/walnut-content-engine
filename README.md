@@ -42,6 +42,18 @@ node scripts/generation.test.mjs
 
 - [数据花园 Demo 实机录屏（原始画质）](https://github.com/senizuaki-bit/walnut-content-engine/releases/tag/demo-2026-07-20)
 
+## Windows 一键联动包
+
+Release 中的 `data-garden-windows-oneclick-0.8.1.zip` 已自带 Godot 4.5.2、Node.js、内容引擎和游戏源码。完整解压后双击 `运行数据花园Demo.bat`，即使没有任何在线账号或 API Key，也能运行已经发布的内容版本并体验游戏与引擎联动。
+
+在线能力按需配置，互不影响离线 Demo：
+
+- [接入配置总指南](docs/接入配置总指南.md)
+- [DeepSeek 小核桃 AI 接入教程](docs/DeepSeek接入教程.md)
+- [飞书多维表格内容发布接入教程](docs/飞书多维表格接入教程.md)
+- [火山引擎方舟与 Seedream 接入教程](docs/火山引擎接入教程.md)
+- [AI 世界工坊与迁移变式使用说明](AI世界工坊与迁移变式使用说明.md)
+
 ## 安全说明
 
 API 密钥只通过环境变量读取，不应写入仓库。内容引擎运行状态、日志、候选生成缓存、Godot 编辑器缓存和本地导出凭据均已排除。
