@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/demo/loop_oasis/multi_scene/archive_facility.gd" id="1"]
+
+[node name="ArchiveStarMap" type="Node2D"]
+script = ExtResource("1")
+location_id = "archive"
+facility_title = "书书知识星图"
+facility_objective = "依次读取编程、战斗、农场三座知识站，并沿亮线走到对应回声端点。"
+accent_color = Color(0.56, 0.77, 1, 1)
+
+[node name="WorldLayout" type="Node2D" parent="."]
+
+[node name="Station1" type="Marker2D" parent="WorldLayout"]
+position = Vector2(-118, -72)
+
+[node name="Station2" type="Marker2D" parent="WorldLayout"]
+position = Vector2(-128, 0)
+
+[node name="Station3" type="Marker2D" parent="WorldLayout"]
+position = Vector2(-118, 72)
+
+[node name="EchoGoal1" type="Marker2D" parent="WorldLayout"]
+position = Vector2(118, -72)
+
+[node name="EchoGoal2" type="Marker2D" parent="WorldLayout"]
+position = Vector2(128, 0)
+
+[node name="EchoGoal3" type="Marker2D" parent="WorldLayout"]
+position = Vector2(118, 72)
+
+[node name="ArchiveCore" type="Marker2D" parent="WorldLayout"]
+position = Vector2(0, 0)

@@ -119,13 +119,18 @@ export function applyOriginalGarden(template, originalTemplate, { version } = {}
     theme: originalTemplate.world.theme,
     main_skin_id: originalMainSkinId,
     main_context: originalTemplate.world.main_context,
+    main_target: originalMainSkin.target_count,
     exact_feedback: originalTemplate.world.exact_feedback,
   };
   unit.world_skins = [
     structuredClone(originalMainSkin),
     ...unit.world_skins.filter((skin) => skin.skin_id !== currentMainSkinId && skin.skin_id !== originalMainSkinId),
   ];
-  unit.stages = structuredClone(originalTemplate.stages);
+  const originalStagePurposes = new Map(originalTemplate.stages.map((stage) => [stage.id, stage.purpose]));
+  unit.stages = unit.stages.map((stage) => ({
+    ...stage,
+    purpose: originalStagePurposes.get(stage.id) ?? stage.purpose,
+  }));
   unit.hint_policy = structuredClone(originalTemplate.hint_policy);
   unit.surprise = { ...unit.surprise, causal_copy: originalTemplate.surprise.causal_copy };
   unit.release = { ...unit.release, automatic_tests: false, research_review: false, safety_review: false };

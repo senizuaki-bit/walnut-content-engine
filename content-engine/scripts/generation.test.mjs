@@ -8,12 +8,17 @@ import { mockSkinPayload, skinQualityWarnings, validateGeneratedSkinPayload } fr
 import { checkpointPromptCanResume } from "./image-generation.mjs";
 import { validateTransferVariants } from "./variant-structure.mjs";
 import { validateVisualQualityPayload } from "./visual-quality.mjs";
+import { validateContentUnit } from "./validate-content.mjs";
 import { workshopProgressFields } from "./world-workshop.mjs";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const engineRoot = resolve(scriptDir, "..");
 const template = JSON.parse(readFileSync(join(engineRoot, "source", "data-garden-loop.json"), "utf8"));
 const originalTemplate = JSON.parse(readFileSync(join(engineRoot, "source", "data-garden-loop.original.json"), "utf8"));
+validateContentUnit(template);
+const inconsistentTargets = structuredClone(template);
+inconsistentTargets.world.main_target += 1;
+assert.throws(() => validateContentUnit(inconsistentTargets), /main_target.*target_count/u);
 assert.deepEqual(FIXED_ORIGINAL_SKIN_ASSET_KEYS, ["npc"]);
 const dataGardenScript = readFileSync(join(engineRoot, "..", "my_topdown_game-main", "scenes", "demo", "data_garden", "data_garden.gd"), "utf8");
 assert.match(dataGardenScript, /companion_sprite\.texture = load\("res:\/\/assets\/sprites\/companion\/xiao_hetao\.png"\)/u);

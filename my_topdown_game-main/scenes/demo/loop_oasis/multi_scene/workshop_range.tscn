@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/demo/loop_oasis/multi_scene/workshop_facility.gd" id="1"]
+
+[node name="WorkshopRange" type="Node2D"]
+script = ExtResource("1")
+location_id = "workshop"
+facility_title = "叮当师傅工坊"
+facility_objective = "近身领取校准工具，用真实子弹命中三座完全静止、不会攻击的安全靶。"
+accent_color = Color(1, 0.7, 0.36, 1)
+
+[node name="WorldLayout" type="Node2D" parent="."]
+
+[node name="Workbench" type="Marker2D" parent="WorldLayout"]
+position = Vector2(-118, 32)
+
+[node name="Target1" type="Marker2D" parent="WorldLayout"]
+position = Vector2(-28, -68)
+
+[node name="Target2" type="Marker2D" parent="WorldLayout"]
+position = Vector2(72, -40)
+
+[node name="Target3" type="Marker2D" parent="WorldLayout"]
+position = Vector2(116, 42)

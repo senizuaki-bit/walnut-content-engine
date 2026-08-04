@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/demo/loop_oasis/multi_scene/farm_facility.gd" id="1"]
+
+[node name="ProgrammingFarm" type="Node2D"]
+script = ExtResource("1")
+location_id = "farm"
+facility_title = "芽芽家园 · 编程农场 / 叮当"
+facility_objective = "亲自播种四块地，配置 Repeat，让叮当逐格执行浇灌，再逐块收获。"
+accent_color = Color(0.55, 0.9, 0.62, 1)
+
+[node name="WorldLayout" type="Node2D" parent="."]
+
+[node name="Plot1" type="Marker2D" parent="WorldLayout"]
+position = Vector2(-88, -62)
+
+[node name="Plot2" type="Marker2D" parent="WorldLayout"]
+position = Vector2(8, -62)
+
+[node name="Plot3" type="Marker2D" parent="WorldLayout"]
+position = Vector2(-88, 22)
+
+[node name="Plot4" type="Marker2D" parent="WorldLayout"]
+position = Vector2(8, 22)
+
+[node name="DroneConsole" type="Marker2D" parent="WorldLayout"]
+position = Vector2(118, -18)

@@ -1,7 +1,7 @@
 {
   "unit_id": "UNIT-DATA-GARDEN-LOOP",
-  "version": "0.7.5",
-  "status": "automatic_test",
+  "version": "0.8.1",
+  "status": "candidate",
   "audience": {
     "age_band": "8-12",
     "lesson_minutes": 45
@@ -13,7 +13,7 @@
     "mastery": [
       "能预测一次生长只影响一颗光种",
       "能编排重复结构并逐步解释执行轨迹",
-      "能通过把 4 改成 3 验证次数对世界结果的影响",
+      "能通过把 5 改成 4 验证次数对世界结果的影响",
       "能在陌生巡检器中无提示迁移同一结构",
       "能把世界直觉对应到积木结构与 C 语言 for 代码",
       "能根据真实执行轨迹修复 Boss 攻击条件"
@@ -49,14 +49,14 @@
     "theme": "data_garden",
     "main_skin_id": "garden_light_seeds",
     "transfer_skin_id": "garden_inspection",
-    "main_context": "4_dormant_light_seeds",
+    "main_context": "5_dormant_light_seeds",
     "transfer_context": "6_target_patrol_device",
-    "main_target": 4,
+    "main_target": 5,
     "transfer_target": 6,
     "action": "grow",
     "under_feedback": "last_seed_dormant",
     "over_feedback": "overflow_ripple",
-    "exact_feedback": "4_seeds_light_in_sequence"
+    "exact_feedback": "5_seeds_light_in_sequence"
   },
   "program_semantics": {
     "max_execution_steps": 100,
@@ -104,17 +104,17 @@
       "skin_id": "garden_light_seeds",
       "template_id": "TEMPLATE-REPEAT-TARGETS",
       "entity_type": "light_seed",
-      "target_count": 4,
+      "target_count": 5,
       "initial_state": "dormant",
       "completed_state": "active",
       "action_id": "grow_next_seed",
-      "objective": "让 4 个光种依次完成变化",
+      "objective": "让 5 颗光种全部醒来",
       "display": {
         "world_name": "数据花园",
         "entity_name": "光种",
         "action_name": "生长",
         "console_name": "休眠光种控制台",
-        "objective": "让 4 个光种依次完成变化",
+        "objective": "让 5 颗光种全部醒来",
         "scenario_frame": "修复失灵的花园法则，让休眠光种依次醒来"
       },
       "assets": {
@@ -247,7 +247,7 @@
   "stages": [
     {
       "id": "observe",
-      "purpose": "只展示 4 个光种，不提前命名概念"
+      "purpose": "只展示 5 颗休眠光种，不提前命名概念"
     },
     {
       "id": "predict",
@@ -267,11 +267,15 @@
     },
     {
       "id": "counterfactual",
-      "purpose": "把 4 改成 3，明确保留最后一个未完成目标"
+      "purpose": "把 5 改成 4，明确留下最后一颗未点亮光种"
+    },
+    {
+      "id": "combat",
+      "purpose": "把循环装置修复获得的工具用于清除错误怪，完成必经战斗验证"
     },
     {
       "id": "transfer",
-      "purpose": "在 6 目标的陌生巡检站中无术语提示迁移"
+      "purpose": "在 6 目标巡检器的新情境中无术语提示迁移"
     },
     {
       "id": "concept_name",
@@ -280,6 +284,10 @@
     {
       "id": "debug_boss",
       "purpose": "观察护盾与弱点轨迹，修改攻击条件后真实重跑"
+    },
+    {
+      "id": "boss_combat",
+      "purpose": "Debug 解除护盾后，由玩家移动、躲避和射击完成战斗收束"
     },
     {
       "id": "explain",
@@ -324,7 +332,7 @@
     {
       "level": 5,
       "intent": "给出兜底答案并标记复练，仍保留学生执行权",
-      "template": "完整结构是“重复4次：生长”。这次会标记复练，仍由你亲手修改并运行。",
+      "template": "完整结构是“重复5次：生长”。这次会标记复练，仍由你亲手修改并运行。",
       "reveal_answer": true,
       "needs_review": true,
       "next_action": "学生亲手修改并运行"
@@ -334,7 +342,7 @@
     "id": "garden_restore",
     "trigger": "main_program_exact",
     "duration_seconds": 1.8,
-    "causal_copy": "4 个光种按你的执行轨迹依次完成变化。",
+    "causal_copy": "5 颗光种按你的执行轨迹依次醒来。",
     "must_be_student_triggered": true
   },
   "boss": {
@@ -372,9 +380,13 @@
       "hint_delivered",
       "surprise_triggered",
       "counterfactual_run",
+      "combat_started",
+      "combat_cleared",
       "transfer_run",
       "concept_revealed",
       "boss_debug_run",
+      "boss_combat_started",
+      "boss_combat_cleared",
       "needs_review_marked",
       "optional_explore_completed",
       "session_completed"

@@ -30,6 +30,8 @@ var cooldown: float
 var parent_room: LevelRoom
 var enemy_state: EnemyStates
 var move_destionation: Vector2
+var attack_reposition_remaining := 0.0
+var hurt_flash_remaining := 0.0
 
 
 func _ready() -> void:
@@ -40,19 +42,20 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	_update_hurt_flash(delta)
 	if not Global.player_ref: return
 	rotate_enemy()
 	if enemy_state == EnemyStates.ATTACKING:
 		manage_weapon(delta)
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not Global.player_ref ||  not can_move: return
 	match enemy_type:
 		"Chase":
 			run_enemy_chase()
 		"Weapon":
-			run_enemy_Weapon()
+			run_enemy_Weapon(delta)
 
 
 func run_enemy_chase() -> void:
@@ -65,7 +68,7 @@ func run_enemy_chase() -> void:
 	move_and_slide()
 
 
-func run_enemy_Weapon() -> void:
+func run_enemy_Weapon(delta: float) -> void:
 	match enemy_state:
 		EnemyStates.FINDING_DESTINATION:
 			var local_position = parent_room.get_free_spawn_position()
@@ -77,12 +80,14 @@ func run_enemy_Weapon() -> void:
 			move_and_slide()
 			if global_position.distance_to(move_destionation) < 2.0:
 				velocity = Vector2.ZERO
+				attack_reposition_remaining = 1.0
 				enemy_state = EnemyStates.ATTACKING
 		EnemyStates.ATTACKING:
 			velocity = Vector2.ZERO
 			move_and_slide()
-			await get_tree().create_timer(1.0).timeout
-			enemy_state = EnemyStates.FINDING_DESTINATION
+			attack_reposition_remaining = maxf(attack_reposition_remaining - delta, 0.0)
+			if is_zero_approx(attack_reposition_remaining):
+				enemy_state = EnemyStates.FINDING_DESTINATION
 
 
 func rotate_enemy() -> void:
@@ -118,9 +123,16 @@ func _on_health_component_on_unit_damaged(_amount: float) -> void:
 	health_bar.value = health_component.current_health / max_health
 	animated_sprite.material = Global.Hit_MATERIAL
 	animated_sprite.play("hurt")
-	await get_tree().create_timer(0.15).timeout
-	animated_sprite.play("move")
-	animated_sprite.material = null
+	hurt_flash_remaining = 0.15
+
+
+func _update_hurt_flash(delta: float) -> void:
+	if hurt_flash_remaining <= 0.0:
+		return
+	hurt_flash_remaining = maxf(hurt_flash_remaining - delta, 0.0)
+	if is_zero_approx(hurt_flash_remaining) and not is_killed:
+		animated_sprite.play("move")
+		animated_sprite.material = null
 
 
 func _on_health_component_on_unit_dead() -> void:

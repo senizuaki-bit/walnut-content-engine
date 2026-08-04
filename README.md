@@ -1,50 +1,50 @@
-# Plan A · 核桃世界（内容引擎 × 数据花园）
+# 核桃代码世界 · 星光群岛
 
 > [!IMPORTANT]
-> **本仓库展示的是 Plan A「核桃世界」**，当前可运行原型为「数据花园」，重点验证内容引擎与 Godot 游戏的完整联动。
+> 本仓库展示的是 Plan A「核桃代码世界」：以可复用内容引擎驱动不同教学世界。当前主 Demo 已升级为「星光群岛」多场景 P0；旧「数据花园」纵向切片继续作为内容引擎、AI 代理和兼容性回归入口。
 >
-> 提交材料中名为 **《提案报告－核桃守卫战》** 的 HTML 文件，上传时文件名没有标注“Plan B”，但它实际对应的是独立备选方案 **Plan B「核桃守卫战」**。受比赛时间限制，Plan B 的代码与可玩内容没有加入本仓库。它不属于当前 Demo，也不是「核桃世界」中的关卡或子模块。评审本仓库时，请以 Plan A「核桃世界」为准。
+> 提交材料中的《提案报告－核桃守卫战》对应独立备选方案 Plan B「核桃守卫战」。受比赛时间限制，Plan B 的代码与可玩内容未加入本仓库，也不属于当前 Demo。
 
-这是一个面向体验式编程学习的原型项目，由内容引擎和 Godot 游戏 Demo 两部分组成。内容引擎把教学目标、任务、提示策略和评估规则编译为不可变内容包；游戏读取这些内容包，呈现“数据花园”学习体验并记录结构化学习事件。
+这是一个基于 Godot 4.5.2 的 AI 原生编程学习游戏 Demo。实现遵循内部 v2.1 产品基线；公开仓库保留实现、接口与验收矩阵，不分发内部原型原文。《世界观》只负责叙事、角色与地点称谓，不改变 P0 产品合同。
+
+## 一键体验
+
+双击 [运行核桃代码世界Demo.bat](运行核桃代码世界Demo.bat)。启动器优先使用本地 `tools/` 便携运行时；源码仓库未附带二进制时，会回退到系统 `PATH` 中的 Godot 4.5.2。Node.js 20+ 只用于内容引擎、本地 AI 代理和全量测试；不联网也能完成确定性主线。
+
+操作：WASD/方向键移动，E/回车交互，鼠标瞄准与左键射击，M 查看家园路线，Esc 返回，R 在设施失败后无损重试。
+
+## 当前 P0 流程
+
+可行走家园 → 星光群岛双路线地图 → 关卡整备 → 观察房 → 安全编程房 → 谜题小桥与脉冲防线双必经 → 陌生任务迁移 → 三阶段 Boss → 结算 → 编程农场 → 成长舱 → 知识星图 → 工坊。
+
+每个顶层地点都是独立可玩场景。完成状态来自移动、交互、真实 Bullet 命中、Enemy 清除、宝箱与实体门等世界证据；弹窗和测试快捷键不能伪造通关。
 
 ## 方案定位
 
-- **Plan A — 核桃世界：** 本仓库对应的主方案，以可复用内容引擎驱动不同教学世界；「数据花园」是当前完成并可运行的示范世界。
-- **Plan B — 核桃守卫战：** 提交材料里的《提案报告－核桃守卫战》HTML（文件名未写“Plan B”）就是该备选方案，定位为“AI × 飞书内容引擎驱动的可编程塔防学习系统”；因比赛时间限制未纳入本仓库实现，不与 Plan A 的代码、完成度或演示流程混合计算。
-- **当前评审范围：** 内容引擎、数据花园游戏、AI 辅助、内容发布与学习证据回流所组成的 Plan A 闭环。
+- **Plan A — 核桃代码世界：** 本仓库对应的主方案；「星光群岛」是当前主 Demo，「数据花园」是保留的旧版纵向切片。
+- **Plan B — 核桃守卫战：** 独立备选的可编程塔防学习系统，未纳入本仓库实现。
+- **当前评审范围：** 多场景 Godot 游戏、内容引擎、AI 辅助、内容发布与学习证据回流所组成的 Plan A 闭环。
 
 ## 项目结构
 
-- `content-engine/`：Node.js 内容校验、编译、飞书发布、世界皮肤与迁移变式生成管线。
-- `my_topdown_game-main/`：Godot 4.5 游戏项目，主场景为“核桃编程 · 数据花园”。
+- [my_topdown_game-main/](my_topdown_game-main/)：Godot 多场景游戏、合同、状态与 QA；
+- [content-engine/](content-engine/)：教学内容校验、编译、版本与发布回退管线；
+- [xiao-hetao-ai-server/](xiao-hetao-ai-server/)：小核桃本地代理与契约测试。
 
-## 内容引擎
+## 项目文档
 
-需要 Node.js 20 或更高版本。
+- [Demo 操作、完整流程、模块接口与测试边界](my_topdown_game-main/DEMO说明.md)
+- [当前视觉与交互 QA、官方参考和未封板项](my_topdown_game-main/design-qa.md)
+- [v2.1 P0 要求—实现—自动化证据矩阵](my_topdown_game-main/design/prototype-v2.1-compliance.md)
+- [内容引擎使用说明](内容引擎使用说明.md)
 
-```powershell
-cd content-engine
-node scripts/validate-content.mjs source/data-garden-loop.json
-node scripts/compile-content.mjs source/data-garden-loop.json
-node scripts/publish-from-feishu.test.mjs
-node scripts/generation.test.mjs
-```
+## 自动化与 AI 边界
 
-详细设计、飞书内容工作流和发布方式见 [`content-engine/README.md`](content-engine/README.md)。
+运行 [run-godot-integration-test.ps1](run-godot-integration-test.ps1) 可执行每场景物理测试和全链合同/状态测试。当前全量结果为 `ALL_AUTOMATED_TESTS_OK cases=24`，最终日志诊断扫描通过；两层证据共同构成验收，不把合同 harness 描述成连续操作全部场景的物理机器人。
 
-## Godot 游戏
+本轮 AI 验收只使用本地 mock/固定提示，未向 DeepSeek 发送数据，也未验证真实飞书原生 AI。判题、奖励与存档始终由 Godot 确定性系统掌握。
 
-使用 Godot 4.5.x 打开 `my_topdown_game-main/project.godot`，运行主场景即可启动数据花园 Demo。
-
-操作方式、完整学习链、小核桃 AI 边界和课程节奏见 [`my_topdown_game-main/DEMO说明.md`](my_topdown_game-main/DEMO说明.md)。
-
-## 实机演示
-
-- [数据花园 Demo 实机录屏（原始画质）](https://github.com/senizuaki-bit/walnut-content-engine/releases/tag/demo-2026-07-20)
-
-## Windows 一键联动包
-
-Release 中的 `data-garden-windows-oneclick-0.8.1.zip` 已自带 Godot 4.5.2、Node.js、内容引擎和游戏源码。完整解压后双击 `运行数据花园Demo.bat`，即使没有任何在线账号或 API Key，也能运行已经发布的内容版本并体验游戏与引擎联动。
+## 第三方接入（可选）
 
 在线能力按需配置，互不影响离线 Demo：
 
@@ -54,6 +54,14 @@ Release 中的 `data-garden-windows-oneclick-0.8.1.zip` 已自带 Godot 4.5.2、
 - [火山引擎方舟与 Seedream 接入教程](docs/火山引擎接入教程.md)
 - [AI 世界工坊与迁移变式使用说明](AI世界工坊与迁移变式使用说明.md)
 
-## 安全说明
+## 旧版实机与 Windows 联动包
 
-API 密钥只通过环境变量读取，不应写入仓库。内容引擎运行状态、日志、候选生成缓存、Godot 编辑器缓存和本地导出凭据均已排除。
+- [数据花园 Demo 实机录屏与 0.8.1 一键包](https://github.com/senizuaki-bit/walnut-content-engine/releases/tag/demo-2026-07-20)
+
+该 Release 保留旧「数据花园」纵向切片，并附带 Godot 4.5.2 与 Node.js。它用于兼容演示，不代表当前「星光群岛」主流程的最新源码。
+
+## 安全与发布边界
+
+API 密钥只通过环境变量读取，不应写入仓库。内容引擎状态、日志、候选缓存、学习会话、Godot 编辑器缓存、本地运行时、内部原型原文和内部参考截图均已排除。
+
+公开发布前仍须完成触控、无障碍、儿童实测和 [第三方素材授权审计](THIRD_PARTY_NOTICES.md)。

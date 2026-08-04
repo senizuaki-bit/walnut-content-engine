@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/demo/loop_oasis/home_base.gd" id="1_home"]
+
+[node name="LoopOasisHomeBase" type="Node2D"]
+script = ExtResource("1_home")
+
+[node name="World" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="RoomTiles" type="Node2D" parent="World"]
+
+[node name="Floor" type="TileMapLayer" parent="World/RoomTiles"]
+texture_filter = 1
+z_index = 1
+
+[node name="Walls" type="TileMapLayer" parent="World/RoomTiles"]
+texture_filter = 1
+z_index = 2
+
+[node name="Doorways" type="Node2D" parent="World"]
+z_index = 3
+
+[node name="Decor" type="Node2D" parent="World"]
+y_sort_enabled = true
+
+[node name="Facilities" type="Node2D" parent="World"]
+y_sort_enabled = true
+
+[node name="Actors" type="Node2D" parent="World"]
+y_sort_enabled = true
+
+[node name="WorldLabels" type="Node2D" parent="World"]
+z_index = 1000

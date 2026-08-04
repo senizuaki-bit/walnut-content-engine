@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="核桃编程 · 数据花园"
-run/main_scene="res://scenes/demo/data_garden/data_garden.tscn"
+config/name="核桃代码世界 · 星光群岛"
+run/main_scene="res://scenes/demo/loop_oasis/home_base.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -21,6 +21,8 @@ buses/default_bus_layout="res://theme/audio/default_bus_layout.tres"
 
 [autoload]
 
+LoopRunState="*res://scenes/demo/loop_oasis/multi_scene/loop_run_state.gd"
+SceneFlow="*res://scenes/demo/loop_oasis/multi_scene/scene_flow.gd"
 Transition="*res://autoloads/transition/transition.tscn"
 MusicPlayer="*res://autoloads/audio_player/music_player.tscn"
 SFXPlayer="*res://autoloads/audio_player/sfx_player.tscn"

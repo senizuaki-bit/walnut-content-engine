@@ -43,6 +43,11 @@ export function validateContentUnit(unit) {
   invariant(skins.some((skin) => skin.skin_id === transferSkinId), "world.transfer_skin_id 必须引用现有世界皮肤");
   invariant(mainSkinId !== transferSkinId, "主任务与迁移任务不能使用同一皮肤");
   const mainSkin = skins.find((skin) => skin.skin_id === mainSkinId);
+  const transferSkin = skins.find((skin) => skin.skin_id === transferSkinId);
+  invariant(Number.isInteger(mainSkin?.target_count), "主世界皮肤 target_count 必须是整数");
+  invariant(Number.isInteger(transferSkin?.target_count), "迁移世界皮肤 target_count 必须是整数");
+  invariant(mainSkin.target_count === world.main_target, "world.main_target 必须与主世界皮肤 target_count 一致");
+  invariant(transferSkin.target_count === world.transfer_target, "world.transfer_target 必须与迁移世界皮肤 target_count 一致");
   for (const key of ["world_name", "entity_name", "action_name", "console_name", "objective"]) {
     invariant(typeof mainSkin?.display?.[key] === "string" && mainSkin.display[key].trim(), `主世界皮肤缺少 display.${key}`);
   }
@@ -51,7 +56,7 @@ export function validateContentUnit(unit) {
   invariant(unit.diagnostic_rules.some((rule) => rule.diagnosis_id === "COUNT_TOO_LARGE"), "缺少确定性次数过多诊断");
 
   const stageIds = new Set((unit.stages ?? []).map((stage) => stage.id));
-  for (const required of ["observe", "predict", "single_action", "program", "trace", "counterfactual", "transfer", "concept_name", "debug_boss", "explain"]) {
+  for (const required of ["observe", "predict", "single_action", "program", "trace", "counterfactual", "combat", "transfer", "concept_name", "debug_boss", "boss_combat", "explain"]) {
     invariant(stageIds.has(required), `缺少必要阶段：${required}`);
   }
 
@@ -77,7 +82,7 @@ export function validateContentUnit(unit) {
   const events = unit.evidence?.events ?? [];
   invariant(/^\d+\.\d+\.\d+$/.test(unit.evidence?.event_schema_version ?? ""), "缺少事件 schema 版本");
   invariant(events.length === new Set(events).size, "事件名不能重复");
-  for (const required of ["program_run", "hint_requested", "hint_delivered", "surprise_triggered", "counterfactual_run", "transfer_run", "concept_revealed", "boss_debug_run", "session_completed"]) {
+  for (const required of ["program_run", "hint_requested", "hint_delivered", "surprise_triggered", "counterfactual_run", "combat_started", "combat_cleared", "transfer_run", "concept_revealed", "boss_debug_run", "boss_combat_started", "boss_combat_cleared", "session_completed"]) {
     invariant(events.includes(required), `缺少必要事件：${required}`);
   }
   const effectivenessMetrics = unit.evidence?.session_metrics?.effectiveness ?? {};

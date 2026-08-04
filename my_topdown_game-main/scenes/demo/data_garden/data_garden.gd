@@ -37,6 +37,7 @@ const TRANSFER_CONTENT_SKIN := "garden_inspection"
 const DEFAULT_MAIN_LOOP_TARGET := 4
 const DEFAULT_TRANSFER_LOOP_TARGET := 4
 const PLAYER_MAX_ENERGY := 5.0
+const BOSS_COMBAT_MAX_HEALTH := 6
 const XIAO_HETAO_AI_DEFAULT_ENDPOINT := "http://127.0.0.1:8787/api/xiao-hetao/hint"
 const LEARNING_EVENT_DEFAULT_ENDPOINT := "http://127.0.0.1:8787/api/learning-events"
 const REVIEW_ASSIGNMENT_DEFAULT_ENDPOINT := "http://127.0.0.1:8787/api/review-assignment"
@@ -87,6 +88,12 @@ var main_pattern_verified := false
 var counterfactual_done := false
 var concept_revealed := false
 var needs_review := false
+var puzzle_clear := false
+var combat_clear := false
+var boss_debug_clear := false
+var boss_combat_clear := false
+var regular_enemies_defeated := 0
+var boss_hits_landed := 0
 var last_program_change := "尚未修改程序"
 var active_trace_index := -1
 var action_dragging := false
@@ -218,6 +225,7 @@ var boss_condition_weak_only := false
 var boss_debug_phase := -1
 var boss_weak_open := false
 var boss_blocked_hits := 0
+var boss_combat_active := false
 
 var beacon_positions := PackedVector2Array()
 
@@ -352,6 +360,10 @@ func _content_program_for(skin_id: String, count: int, node_prefix: String) -> D
 	return content_runtime.make_repeat_program(action_id, count, node_prefix)
 
 
+func _combat_controls_active() -> bool:
+	return stage == Stage.COMBAT or (stage == Stage.BOSS and boss_combat_active)
+
+
 func _process(delta: float) -> void:
 	companion_time += delta
 	touch_cooldown = maxf(0.0, touch_cooldown - delta)
@@ -415,12 +427,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			_cycle_repeat_count()
 		elif event.physical_keycode == KEY_H:
 			_request_hint()
-		elif event.physical_keycode == KEY_SPACE and stage == Stage.COMBAT:
+		elif event.physical_keycode == KEY_SPACE and _combat_controls_active():
 			_shoot_at(_nearest_enemy_position())
 		elif event.physical_keycode == KEY_R and stage == Stage.COMPLETE:
 			get_tree().reload_current_scene()
 	elif event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_LEFT and stage == Stage.COMBAT:
+		if event.button_index == MOUSE_BUTTON_LEFT and _combat_controls_active():
 			_shoot_at(event.position)
 
 
@@ -522,6 +534,12 @@ func _draw_boss_debug_state() -> void:
 	if stage != Stage.BOSS or not boss_guardian_sprite or not boss_guardian_sprite.visible:
 		return
 	var center := boss_guardian_sprite.position
+	if boss_combat_active:
+		draw_circle(center + Vector2(0, -12), 22.0, Color(COLOR_CORAL, 0.92))
+		draw_circle(center + Vector2(0, -12), 42.0, Color(COLOR_GOLD, 0.16))
+		draw_arc(center, 72.0, -2.75, -1.82, 16, Color(COLOR_CYAN, 0.42), 5.0, true)
+		draw_arc(center, 72.0, -1.32, -0.38, 16, Color(COLOR_CYAN, 0.42), 5.0, true)
+		return
 	if boss_weak_open:
 		draw_circle(center + Vector2(0, -12), 17.0, Color(COLOR_CORAL, 0.78))
 		draw_circle(center + Vector2(0, -12), 31.0, Color(COLOR_CORAL, 0.14))
@@ -570,7 +588,7 @@ func _draw_projectiles() -> void:
 
 
 func _draw_actor_shadows() -> void:
-	if stage not in [Stage.BOSS, Stage.COMPLETE]:
+	if stage != Stage.COMPLETE and (stage != Stage.BOSS or boss_combat_active):
 		draw_colored_polygon(PackedVector2Array([
 			player_position + Vector2(-28, 31), player_position + Vector2(28, 31),
 			player_position + Vector2(20, 39), player_position + Vector2(-20, 39),
@@ -583,11 +601,11 @@ func _draw_actor_shadows() -> void:
 
 
 func _draw_combat_overlays() -> void:
-	if stage != Stage.COMBAT:
+	if not _combat_controls_active():
 		return
 	for enemy in enemies:
 		var p: Vector2 = enemy.position
-		var hp_ratio := clampf(float(enemy.hp) / 2.0, 0.0, 1.0)
+		var hp_ratio := clampf(float(enemy.hp) / float(enemy.get("max_hp", 2)), 0.0, 1.0)
 		draw_rect(Rect2(p + Vector2(-25, -39), Vector2(50, 7)), Color("#17172dcc"), true)
 		draw_rect(Rect2(p + Vector2(-23, -37), Vector2(46.0 * hp_ratio, 3)), COLOR_CORAL, true)
 		if p.distance_to(player_position) < 110.0:
@@ -627,7 +645,7 @@ func _update_vfx(delta: float) -> void:
 
 
 func _update_energy(delta: float) -> void:
-	if stage != Stage.COMBAT or player_energy >= PLAYER_MAX_ENERGY:
+	if not _combat_controls_active() or player_energy >= PLAYER_MAX_ENERGY:
 		return
 	energy_regen_timer += delta
 	if energy_regen_timer >= 0.62:
@@ -1100,7 +1118,7 @@ func _build_boss_ui() -> void:
 
 
 func _build_summary_ui() -> void:
-	summary_panel = _make_panel(Rect2(252, 126, 776, 510), Color("#fff8ecfa"), COLOR_GOLD, 24, 5)
+	summary_panel = _make_panel(Rect2(240, 72, 800, 612), Color("#fff8ecfa"), COLOR_GOLD, 24, 5)
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 14)
 	summary_panel.add_child(box)
@@ -1110,16 +1128,20 @@ func _build_summary_ui() -> void:
 	var subtitle := _make_label("不是因为得了三颗星，而是因为你真的改变了世界规则。", 20, Color("#554c6d"))
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(subtitle)
-	summary_body = _make_label("", 20, Color("#2c2743"))
-	summary_body.custom_minimum_size = Vector2(0, 250)
+	summary_body = _make_label("", 18, Color("#2c2743"))
+	summary_body.custom_minimum_size = Vector2(0, 262)
 	summary_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(summary_body)
 	var replay := _make_button("重新体验  R", Color("#f56f38"), 20)
-	replay.custom_minimum_size = Vector2(0, 58)
+	replay.custom_minimum_size = Vector2(0, 52)
 	replay.pressed.connect(func() -> void: get_tree().reload_current_scene())
 	box.add_child(replay)
+	var home_button := _make_button("带着水脉种子返回芽心基地", COLOR_MINT_DARK, 18)
+	home_button.custom_minimum_size = Vector2(0, 50)
+	home_button.pressed.connect(_return_home)
+	box.add_child(home_button)
 	var stay_button := _make_button("留在修复后的花园", COLOR_PURPLE, 18)
-	stay_button.custom_minimum_size = Vector2(0, 48)
+	stay_button.custom_minimum_size = Vector2(0, 44)
 	stay_button.pressed.connect(_stay_in_restored_garden)
 	box.add_child(stay_button)
 	summary_panel.hide()
@@ -1129,6 +1151,10 @@ func _stay_in_restored_garden() -> void:
 	summary_panel.hide()
 	companion_panel.show()
 	_set_companion_message("你可以在这里看看自己留下的光。按 R 随时重新挑战。")
+
+
+func _return_home() -> void:
+	get_tree().change_scene_to_file("res://scenes/demo/loop_oasis/home_base.tscn")
 
 
 func _build_optional_ui() -> void:
@@ -1183,7 +1209,7 @@ func _build_feedback_ui() -> void:
 
 
 func _update_player(delta: float) -> void:
-	var can_move := stage in [Stage.ARRIVAL, Stage.OBSERVE, Stage.COMBAT, Stage.TRANSFER] and not optional_panel.visible
+	var can_move := (stage in [Stage.ARRIVAL, Stage.OBSERVE, Stage.COMBAT, Stage.TRANSFER] or _combat_controls_active()) and not optional_panel.visible
 	var direction := Vector2.ZERO
 	if can_move and not test_mode and not capture_mode:
 		direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -1597,6 +1623,7 @@ func _run_main_loop() -> void:
 	if learning_phase == LearningPhase.COUNTERFACTUAL:
 		if repeat_count == main_loop_target - 1 and last_diagnosis_id == "COUNT_TOO_SMALL":
 			counterfactual_done = true
+			puzzle_clear = true
 			trace_label.text = "反事实成立：%d 次只点亮前 %d 颗，第 %d 颗保持休眠。" % [main_loop_target - 1, main_loop_target - 1, main_loop_target]
 			command_info_label.text = "修改数字改变了世界结果；证据已经留下。"
 			_set_restored_alpha(0.52)
@@ -1606,9 +1633,7 @@ func _run_main_loop() -> void:
 			if not test_mode:
 				await get_tree().create_timer(1.05).timeout
 			code_panel.hide()
-			_set_stage(Stage.TRANSFER)
-			portal_sprite.show()
-			_show_stage_banner("%s已启动 · 迁移同一规律" % transfer_world_name, COLOR_GOLD)
+			await _enter_regular_combat()
 		else:
 			trace_label.text = "反事实实验需要把刚才的 %d 改成 %d。" % [main_loop_target, main_loop_target - 1]
 			_set_companion_message("这一步不是再找正确答案，而是做对照实验：只把 %d 改成 %d，再运行一次。" % [main_loop_target, main_loop_target - 1])
@@ -1666,6 +1691,46 @@ func _celebrate_restoration() -> void:
 		await get_tree().create_timer(1.62).timeout
 	_set_restored_alpha(1.0)
 	restoration_active = false
+
+
+func _enter_regular_combat() -> void:
+	await _celebrate_restoration()
+	combat_clear = false
+	regular_enemies_defeated = 0
+	weapon_unlocked = true
+	player_health = 5
+	player_energy = PLAYER_MAX_ENERGY
+	player_position = Vector2(640, 505)
+	player_sprite.position = player_position
+	status_panel.show()
+	weapon_badge.show()
+	_set_stage(Stage.COMBAT)
+	_spawn_buglings()
+	_log_learning_event("combat_started", "combat", {
+		"puzzle_clear": puzzle_clear,
+		"enemy_count": enemies.size(),
+		"required_for_progress": true,
+	})
+	_set_companion_message("循环装置已经修复，光种发射器解锁。清除 3 只错误怪后，迁移通道才会开启。")
+
+
+func _finish_regular_combat() -> void:
+	if combat_clear:
+		return
+	combat_clear = true
+	weapon_unlocked = false
+	projectiles.clear()
+	weapon_badge.hide()
+	status_panel.hide()
+	_log_learning_event("combat_cleared", "combat", {
+		"puzzle_clear": puzzle_clear,
+		"combat_clear": true,
+		"enemies_defeated": regular_enemies_defeated,
+	})
+	_set_stage(Stage.TRANSFER)
+	portal_sprite.show()
+	_show_stage_banner("错误已清除 · 迁移通道开启", COLOR_CYAN)
+	_set_companion_message("错误怪已清除。右侧出现陌生巡检器——这次试试独立迁移。")
 
 
 func _show_stage_banner(message: String, border_color: Color = COLOR_GOLD) -> void:
@@ -1777,7 +1842,10 @@ func _request_hint() -> void:
 	elif stage == Stage.COMBAT:
 		_set_companion_message("移动躲开错误怪，点击它们或按空格发射光种。")
 	elif stage == Stage.BOSS:
-		_set_companion_message("回放执行轨迹：第 1、3 拍出现护盾。检查条件块在什么状态下允许攻击。")
+		if boss_combat_active:
+			_set_companion_message("护盾已经解除。保持移动，点击守门者或按空格自动瞄准。")
+		else:
+			_set_companion_message("回放执行轨迹：第 1、3 拍出现护盾。检查条件块在什么状态下允许攻击。")
 	else:
 		_set_companion_message("先完成眼前这一小步。我一直在旁边。")
 
@@ -1989,9 +2057,11 @@ func _spawn_buglings() -> void:
 			"node": sprite,
 			"position": positions[i],
 			"hp": 2,
+			"max_hp": 2,
 			"speed": 38.0 + i * 7.0,
 			"base_color": enemy_color,
 			"hit_flash": 0.0,
+			"is_boss": false,
 		})
 		_spawn_world_motes(positions[i], 14, enemy_color, 96.0)
 	_play_sfx("res://assets/sounds/spawn.ogg")
@@ -2002,7 +2072,7 @@ func _spawn_buglings() -> void:
 
 
 func _update_combat(delta: float) -> void:
-	if stage != Stage.COMBAT:
+	if not _combat_controls_active():
 		return
 
 	for enemy in enemies:
@@ -2010,7 +2080,8 @@ func _update_combat(delta: float) -> void:
 		enemy.node.modulate = Color.WHITE if float(enemy.hit_flash) > 0.0 else enemy.base_color
 		var enemy_pos: Vector2 = enemy.position
 		var distance := enemy_pos.distance_to(player_position)
-		if distance > 70.0:
+		var contact_radius := float(enemy.get("contact_radius", 70.0))
+		if distance > contact_radius:
 			enemy_pos = enemy_pos.move_toward(player_position, float(enemy.speed) * delta)
 			enemy.position = enemy_pos
 			enemy.node.position = enemy_pos
@@ -2039,9 +2110,14 @@ func _update_combat(delta: float) -> void:
 		projectile.life -= delta
 		var hit := false
 		for j in range(enemies.size() - 1, -1, -1):
-			if projectile.position.distance_to(enemies[j].position) < 30.0:
+			var hit_radius := float(enemies[j].get("hit_radius", 30.0))
+			if projectile.position.distance_to(enemies[j].position) < hit_radius:
 				enemies[j].hp -= 1
 				enemies[j].hit_flash = 0.16
+				if bool(enemies[j].get("is_boss", false)):
+					boss_health = int(enemies[j].hp)
+					boss_health_bar.value = boss_health
+					boss_hits_landed += 1
 				var knock_direction: Vector2 = player_position.direction_to(enemies[j].position)
 				enemies[j].position += knock_direction * 14.0
 				enemies[j].node.position = enemies[j].position
@@ -2051,24 +2127,26 @@ func _update_combat(delta: float) -> void:
 				if int(enemies[j].hp) <= 0:
 					_spawn_world_motes(enemies[j].position, 18, enemies[j].base_color, 132.0)
 					_play_sfx("res://assets/sounds/explosion-a.ogg")
-					enemies[j].node.queue_free()
+					if bool(enemies[j].get("is_boss", false)):
+						enemies[j].node.hide()
+					else:
+						regular_enemies_defeated += 1
+						enemies[j].node.queue_free()
 					enemies.remove_at(j)
 					_update_objective()
 				break
 		if hit or float(projectile.life) <= 0.0:
 			projectiles.remove_at(i)
 
-	if enemies.is_empty() and weapon_unlocked:
-		weapon_unlocked = false
-		projectiles.clear()
-		_set_stage(Stage.TRANSFER)
-		portal_sprite.show()
-		_show_stage_banner("错误已清除 · 迁移通道开启", COLOR_CYAN)
-		_set_companion_message("错误怪已清除。右侧出现陌生巡检器——这次试试独立迁移。")
+	if enemies.is_empty():
+		if stage == Stage.COMBAT and weapon_unlocked:
+			_finish_regular_combat()
+		elif stage == Stage.BOSS and boss_combat_active:
+			_finish_boss_combat()
 
 
 func _shoot_at(target: Vector2) -> void:
-	if stage != Stage.COMBAT or shot_cooldown > 0.0:
+	if not _combat_controls_active() or shot_cooldown > 0.0:
 		return
 	if player_energy < 1.0:
 		_set_companion_message("能量正在回充。先移动躲开，等蓝色能量条恢复。")
@@ -2111,6 +2189,12 @@ func _start_boss() -> void:
 	boss_debug_phase = -1
 	boss_weak_open = false
 	boss_blocked_hits = 0
+	boss_debug_clear = false
+	boss_combat_clear = false
+	boss_combat_active = false
+	boss_hits_landed = 0
+	_clear_enemies()
+	boss_health_bar.max_value = 2
 	boss_health_bar.value = boss_health
 	boss_panel.show()
 	boss_guardian_sprite.show()
@@ -2206,12 +2290,13 @@ func _run_boss_debug_program() -> void:
 		"success": boss_condition_weak_only and boss_blocked_hits == 0 and boss_health <= 0,
 	})
 	if boss_condition_weak_only and boss_blocked_hits == 0 and boss_health <= 0:
-		boss_feedback_label.text = "护盾阶段全部跳过，两次攻击都命中弱点。Debug 成功。"
+		boss_debug_clear = true
+		boss_feedback_label.text = "护盾阶段全部跳过，两次攻击都命中弱点。护盾已经解除。"
 		boss_feedback_label.add_theme_color_override("font_color", COLOR_MINT)
 		transition_lock = false
 		if not test_mode:
 			await get_tree().create_timer(0.72).timeout
-		await _complete_demo()
+		_enter_boss_combat()
 		return
 
 	boss_attempts += 1
@@ -2225,6 +2310,77 @@ func _run_boss_debug_program() -> void:
 	transition_lock = false
 	for button in boss_option_buttons:
 		button.disabled = false
+
+
+func _enter_boss_combat() -> void:
+	boss_combat_active = true
+	boss_combat_clear = false
+	boss_health = BOSS_COMBAT_MAX_HEALTH
+	boss_hits_landed = 0
+	boss_weak_open = true
+	boss_guardian_sprite.position = Vector2(930, 285)
+	boss_guardian_sprite.modulate = Color.WHITE
+	boss_guardian_sprite.show()
+	boss_health_bar.max_value = BOSS_COMBAT_MAX_HEALTH
+	boss_health_bar.value = boss_health
+	boss_panel.position = Vector2(420, 102)
+	boss_panel.size = Vector2(440, 126)
+	boss_title.text = "守门者 · 护盾已解除"
+	boss_question_label.hide()
+	boss_feedback_label.text = "移动躲避 · 点击守门者 / 空格自动瞄准"
+	boss_feedback_label.add_theme_color_override("font_color", COLOR_GOLD)
+	for button in boss_option_buttons:
+		button.hide()
+	aid_button.hide()
+	boss_panel.show()
+	player_position = Vector2(640, 520)
+	player_sprite.position = player_position
+	player_health = maxi(player_health, 3)
+	player_energy = PLAYER_MAX_ENERGY
+	health_bar.value = player_health
+	energy_bar.value = player_energy
+	status_panel.show()
+	weapon_badge.show()
+	weapon_unlocked = true
+	enemies.append({
+		"node": boss_guardian_sprite,
+		"position": boss_guardian_sprite.position,
+		"hp": BOSS_COMBAT_MAX_HEALTH,
+		"max_hp": BOSS_COMBAT_MAX_HEALTH,
+		"speed": 31.0,
+		"base_color": Color.WHITE,
+		"hit_flash": 0.0,
+		"is_boss": true,
+		"hit_radius": 64.0,
+		"contact_radius": 104.0,
+	})
+	_show_stage_banner("Debug 成功 · 亲手完成战斗收束", COLOR_GOLD)
+	_set_companion_message("条件程序已经解除护盾。现在由你移动和射击，完成最后的世界修复。")
+	_log_learning_event("boss_combat_started", "boss", {
+		"boss_debug_clear": boss_debug_clear,
+		"boss_health": BOSS_COMBAT_MAX_HEALTH,
+		"required_for_progress": true,
+	})
+	_update_objective()
+
+
+func _finish_boss_combat() -> void:
+	if not boss_combat_active or boss_combat_clear:
+		return
+	boss_combat_active = false
+	boss_combat_clear = true
+	weapon_unlocked = false
+	projectiles.clear()
+	boss_guardian_sprite.hide()
+	boss_panel.hide()
+	status_panel.hide()
+	weapon_badge.hide()
+	_log_learning_event("boss_combat_cleared", "boss", {
+		"boss_debug_clear": boss_debug_clear,
+		"boss_combat_clear": true,
+		"hits_landed": boss_hits_landed,
+	})
+	_complete_demo()
 
 
 func _use_companion_aid() -> void:
@@ -2255,11 +2411,12 @@ func _complete_demo() -> void:
 	var review_record := "需要安排一次同知识点复练" if needs_review else "已独立完成，无强制复练标记"
 	summary_body.text = "本关学习证据\n\n" \
 		+ "1. 感知与预测：观察 %d 颗休眠光种，并先预测单次生长结果。\n" % main_loop_target \
-		+ "2. 编排与验证：逐行追踪世界变化，完成 %d→%d 的反事实实验（运行 %d 次，求助 %d 次%s）。\n" % [main_loop_target, main_loop_target - 1, main_run_attempts, hint_requests, ai_record] \
-		+ "3. 陌生迁移：独立控制巡检器检查 %d 个目标（尝试 %d 次）。\n" % [transfer_loop_target, transfer_attempts] \
-		+ "4. 抽象命名：从世界行为、自然语言、积木结构显形到 C 语言 for 代码。\n" \
-		+ "5. Debug 战：根据真实执行轨迹修复攻击条件（错误运行 %d 次，%s）。\n" % [boss_total_errors, aid_record] \
-		+ "6. 自由探索：记忆晶体谜题%s；%s。\n\n" % [optional_record, review_record] \
+		+ "2. 解谜验证：逐行追踪世界变化，完成 %d→%d 反事实（运行 %d 次，求助 %d 次%s）。\n" % [main_loop_target, main_loop_target - 1, main_run_attempts, hint_requests, ai_record] \
+		+ "3. 必经战斗：清除 %d 只错误怪，战斗完成标记已写入。\n" % regular_enemies_defeated \
+		+ "4. 陌生迁移：独立控制巡检器检查 %d 个目标（尝试 %d 次）。\n" % [transfer_loop_target, transfer_attempts] \
+		+ "5. 抽象命名：从世界行为、自然语言、积木结构显形到 C 语言 for 代码。\n" \
+		+ "6. Boss 双阶段：修复攻击条件，再亲手命中 %d 次完成战斗收束（错误运行 %d 次，%s）。\n" % [boss_hits_landed, boss_total_errors, aid_record] \
+		+ "7. 自由探索：记忆晶体谜题%s；%s。\n\n" % [optional_record, review_record] \
 		+ "世界留痕：花园永久记住了修复状态，小核桃升至 Lv.2。"
 	summary_panel.show()
 	_spawn_world_motes(Vector2(640, 360), 64, COLOR_GOLD, 360.0)
@@ -2272,6 +2429,10 @@ func _complete_demo() -> void:
 		"transfer_attempts": transfer_attempts,
 		"concept_revealed": concept_revealed,
 		"boss_errors": boss_total_errors,
+		"puzzle_clear": puzzle_clear,
+		"combat_clear": combat_clear,
+		"boss_debug_clear": boss_debug_clear,
+		"boss_combat_clear": boss_combat_clear,
 		"optional_explore_completed": optional_puzzle_completed,
 		"needs_review": needs_review,
 	})
@@ -2339,8 +2500,12 @@ func _update_objective() -> void:
 			objective_label.text = "给刚才的结构一个名字"
 			progress_label.text = "第 4 层 · C 语言代码已显形"
 		Stage.BOSS:
-			objective_label.text = "Debug 守门者的攻击程序"
-			progress_label.text = "观察轨迹 → 修改条件 → 重新运行"
+			if boss_combat_active:
+				objective_label.text = "护盾已解除 · 完成战斗收束"
+				progress_label.text = "守门者能量 %d / %d · 移动躲避并射击" % [boss_health, BOSS_COMBAT_MAX_HEALTH]
+			else:
+				objective_label.text = "Debug 守门者的攻击程序"
+				progress_label.text = "观察轨迹 → 修改条件 → 重新运行"
 		Stage.COMPLETE:
 			objective_label.text = "%s已记住你的规则" % main_world_name
 			progress_label.text = "循环掌握 · 迁移验证通过"
@@ -2422,6 +2587,12 @@ func _save_memory(completed: bool) -> void:
 		"needs_review": needs_review,
 		"concept_revealed": concept_revealed,
 		"counterfactual_done": counterfactual_done,
+		"puzzle_clear": puzzle_clear,
+		"combat_clear": combat_clear,
+		"boss_debug_clear": boss_debug_clear,
+		"boss_combat_clear": boss_combat_clear,
+		"regular_enemies_defeated": regular_enemies_defeated,
+		"boss_hits_landed": boss_hits_landed,
 		"content_unit_id": str(content_metadata.get("unit_id", "")),
 		"content_version": str(content_metadata.get("version", "")),
 		"content_hash": str(content_metadata.get("content_hash", "")),
@@ -2501,9 +2672,19 @@ func _run_smoke_test() -> void:
 
 	repeat_count = main_loop_target - 1
 	await _run_main_loop()
-	assert(counterfactual_done and stage == Stage.TRANSFER)
+	assert(counterfactual_done and puzzle_clear and stage == Stage.COMBAT)
 	assert(_lit_beacon_count() == main_loop_target - 1)
 	assert(not beacon_lit[main_loop_target - 1])
+	assert(enemies.size() == 3 and weapon_unlocked)
+	for enemy in enemies:
+		enemy.hp = 1
+		projectiles.append({
+			"position": enemy.position,
+			"velocity": Vector2.ZERO,
+			"life": 1.0,
+		})
+	_update_combat(0.0)
+	assert(combat_clear and regular_enemies_defeated == 3 and stage == Stage.TRANSFER)
 
 	_open_optional_puzzle()
 	_answer_optional_puzzle(0)
@@ -2534,9 +2715,21 @@ func _run_smoke_test() -> void:
 	boss_condition_weak_only = true
 	_update_boss_debug_ui()
 	await _run_boss_debug_program()
+	assert(stage == Stage.BOSS and boss_debug_clear and boss_combat_active)
+	assert(enemies.size() == 1 and not boss_combat_clear)
+	enemies[0].hp = 1
+	boss_health = 1
+	boss_health_bar.value = 1
+	projectiles.append({
+		"position": enemies[0].position,
+		"velocity": Vector2.ZERO,
+		"life": 1.0,
+	})
+	_update_combat(0.0)
 	assert(stage == Stage.COMPLETE)
+	assert(boss_combat_clear)
 	assert(summary_panel.visible)
-	assert(counterfactual_done and concept_revealed)
+	assert(puzzle_clear and combat_clear and counterfactual_done and concept_revealed)
 	print("DATA_GARDEN_SMOKE_OK")
 	_quit_after_cleanup()
 
@@ -2611,10 +2804,26 @@ func _capture_reference_state() -> void:
 	await get_tree().process_frame
 	var qa_dir := ProjectSettings.globalize_path("res://qa")
 	DirAccess.make_dir_recursive_absolute(qa_dir)
-	var image := get_viewport().get_texture().get_image()
 	var output := qa_dir.path_join("data-garden-implementation.png")
+	if DisplayServer.get_name() == "headless":
+		push_error("Reference capture requires a rendering display: %s" % output)
+		get_tree().quit(2)
+		return
+	var viewport_texture := get_viewport().get_texture()
+	if viewport_texture == null:
+		push_error("Reference capture requires a rendering display: %s" % output)
+		get_tree().quit(2)
+		return
+	var image := viewport_texture.get_image()
+	if image == null or image.is_empty():
+		push_error("Reference capture returned an empty image: %s" % output)
+		get_tree().quit(2)
+		return
 	var error := image.save_png(output)
 	print("DATA_GARDEN_CAPTURE=", output, " ERROR=", error)
+	if error != OK:
+		get_tree().quit(2)
+		return
 	_quit_after_cleanup()
 
 
@@ -2647,6 +2856,10 @@ func _capture_flow_states() -> void:
 	_update_repeat_button()
 	await _run_main_loop()
 	await _save_flow_capture(qa_dir, "07-counterfactual-v3.png")
+	await _save_flow_capture(qa_dir, "08-combat-room-v4.png")
+	regular_enemies_defeated = enemies.size()
+	_clear_enemies()
+	_finish_regular_combat()
 
 	player_position = Vector2(920, 330)
 	player_sprite.position = player_position
@@ -2655,20 +2868,30 @@ func _capture_flow_states() -> void:
 	_select_action()
 	repeat_count = transfer_loop_target
 	_update_repeat_button()
-	await _save_flow_capture(qa_dir, "08-transfer-v3.png")
+	await _save_flow_capture(qa_dir, "09-transfer-v4.png")
 	await _run_transfer_loop()
-	await _save_flow_capture(qa_dir, "09-c-code-reveal-v3.png")
+	await _save_flow_capture(qa_dir, "10-c-code-reveal-v4.png")
 
 	code_panel.hide()
 	await _start_boss()
-	await _save_flow_capture(qa_dir, "10-debug-boss-before-v3.png")
+	await _save_flow_capture(qa_dir, "11-debug-boss-before-v4.png")
 	await _run_boss_debug_program()
-	await _save_flow_capture(qa_dir, "11-debug-trace-v3.png")
+	await _save_flow_capture(qa_dir, "12-debug-trace-v4.png")
 	boss_condition_weak_only = true
 	_update_boss_debug_ui()
-	await _save_flow_capture(qa_dir, "12-debug-fixed-v3.png")
+	await _save_flow_capture(qa_dir, "13-debug-fixed-v4.png")
 	await _run_boss_debug_program()
-	await _save_flow_capture(qa_dir, "13-complete-v3.png")
+	await _save_flow_capture(qa_dir, "14-boss-combat-v4.png")
+	enemies[0].hp = 1
+	boss_health = 1
+	boss_health_bar.value = 1
+	projectiles.append({
+		"position": enemies[0].position,
+		"velocity": Vector2.ZERO,
+		"life": 1.0,
+	})
+	_update_combat(0.0)
+	await _save_flow_capture(qa_dir, "15-complete-v4.png")
 	print("DATA_GARDEN_FLOW_CAPTURE=", qa_dir)
 	_quit_after_cleanup()
 
@@ -2677,11 +2900,25 @@ func _save_flow_capture(qa_dir: String, filename: String) -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
-	var image := get_viewport().get_texture().get_image()
 	var output := qa_dir.path_join(filename)
+	if DisplayServer.get_name() == "headless":
+		push_error("Flow capture requires a rendering display: %s" % output)
+		get_tree().quit(2)
+		return
+	var viewport_texture := get_viewport().get_texture()
+	if viewport_texture == null:
+		push_error("Flow capture requires a rendering display: %s" % output)
+		get_tree().quit(2)
+		return
+	var image := viewport_texture.get_image()
+	if image == null or image.is_empty():
+		push_error("Flow capture returned an empty image: %s" % output)
+		get_tree().quit(2)
+		return
 	var error := image.save_png(output)
 	if error != OK:
 		push_error("Failed to save flow capture: %s" % output)
+		get_tree().quit(2)
 
 
 func _quit_after_cleanup() -> void:

@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/demo/loop_oasis/multi_scene/growth_facility.gd" id="1"]
+
+[node name="GrowthChamber" type="Node2D"]
+script = ExtResource("1")
+location_id = "growth"
+facility_title = "小核桃成长舱"
+facility_objective = "按序接入五类真实冒险证据，放入突破作物，与小核桃走完三点空间校准。"
+accent_color = Color(0.78, 0.69, 1, 1)
+
+[node name="WorldLayout" type="Node2D" parent="."]
+
+[node name="Evidence1" type="Marker2D" parent="WorldLayout"]
+position = Vector2(-126, -72)
+
+[node name="Evidence2" type="Marker2D" parent="WorldLayout"]
+position = Vector2(-62, -22)
+
+[node name="Evidence3" type="Marker2D" parent="WorldLayout"]
+position = Vector2(-126, 42)
+
+[node name="Evidence4" type="Marker2D" parent="WorldLayout"]
+position = Vector2(66, -72)
+
+[node name="Evidence5" type="Marker2D" parent="WorldLayout"]
+position = Vector2(126, -18)
+
+[node name="GrowthPod" type="Marker2D" parent="WorldLayout"]
+position = Vector2(4, 10)
+
+[node name="Calibration1" type="Marker2D" parent="WorldLayout"]
+position = Vector2(-88, 70)
+
+[node name="Calibration2" type="Marker2D" parent="WorldLayout"]
+position = Vector2(4, 48)
+
+[node name="Calibration3" type="Marker2D" parent="WorldLayout"]
+position = Vector2(96, 70)

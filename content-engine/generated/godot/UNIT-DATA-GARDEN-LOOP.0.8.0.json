@@ -1,0 +1,422 @@
+{
+  "unit_id": "UNIT-DATA-GARDEN-LOOP",
+  "version": "0.8.0",
+  "content_hash": "f79c50aeda69eab9ac16cd48c90589ee147d892fcb5b311668653f3580e929b9",
+  "generated_at": "2026-07-19T16:18:34.893Z",
+  "audience": {
+    "age_band": "8-12",
+    "lesson_minutes": 45
+  },
+  "concept": {
+    "concept_id": "CONCEPT-LOOP-COUNT",
+    "name": "计数循环",
+    "cognitive_essence": "先从世界中感知一次动作与一个目标的对应关系，再用重复结构表达规律，通过反事实与陌生迁移形成可解释的循环概念。",
+    "mastery": [
+      "能预测一次生长只影响一颗光种",
+      "能编排重复结构并逐步解释执行轨迹",
+      "能通过把 4 改成 3 验证次数对世界结果的影响",
+      "能在陌生巡检器中无提示迁移同一结构",
+      "能把世界直觉对应到积木结构与 C 语言 for 代码",
+      "能根据真实执行轨迹修复 Boss 攻击条件"
+    ]
+  },
+  "misconceptions": [
+    {
+      "id": "MIS-LOOP-UNDER",
+      "signal": "repeat_count < target_count",
+      "meaning": "未建立目标数量与执行次数的一一对应",
+      "intervention": "保留已完成结果，突出未执行目标并引导观察世界偏差"
+    },
+    {
+      "id": "MIS-LOOP-OVER",
+      "signal": "repeat_count > target_count",
+      "meaning": "未理解目标耗尽后的边界",
+      "intervention": "让多出的执行产生可理解、无惩罚的溢出反馈"
+    },
+    {
+      "id": "MIS-LOOP-ACTION",
+      "signal": "action_not_nested",
+      "meaning": "尚未把一次动作放进重复结构",
+      "intervention": "先运行一次动作，再让学生把动作拖进结构"
+    },
+    {
+      "id": "MIS-BOSS-CONDITION",
+      "signal": "attack_when_shielded",
+      "meaning": "忽略状态条件，在护盾阶段仍执行攻击",
+      "intervention": "回放四拍轨迹并指向条件块，不提供选择题答案"
+    }
+  ],
+  "world": {
+    "theme": "data_garden",
+    "main_skin_id": "garden_light_seeds",
+    "transfer_skin_id": "garden_inspection",
+    "main_context": "5_dormant_light_seeds",
+    "transfer_context": "6_target_patrol_device",
+    "main_target": 4,
+    "transfer_target": 6,
+    "action": "grow",
+    "under_feedback": "last_seed_dormant",
+    "over_feedback": "overflow_ripple",
+    "exact_feedback": "5_seeds_light_in_sequence"
+  },
+  "program_semantics": {
+    "max_execution_steps": 100,
+    "allowed_nodes": [
+      "Sequence",
+      "Repeat",
+      "Action"
+    ]
+  },
+  "templates": [
+    {
+      "template_id": "TEMPLATE-REPEAT-TARGETS",
+      "name": "对 N 个目标依次执行同一动作",
+      "allowed_nodes": [
+        "Sequence",
+        "Repeat",
+        "Action"
+      ],
+      "goal": "all_targets_completed",
+      "expected_structure": {
+        "type": "Repeat",
+        "count_relation": "equals_target_count",
+        "body_type": "Action"
+      }
+    }
+  ],
+  "world_actions": [
+    {
+      "action_id": "grow_next_seed",
+      "from_state": "dormant",
+      "to_state": "active",
+      "selector": "first_incomplete",
+      "no_target_feedback": "overflow_ripple"
+    },
+    {
+      "action_id": "inspect_next_target",
+      "from_state": "unchecked",
+      "to_state": "checked",
+      "selector": "first_incomplete",
+      "no_target_feedback": "overflow_ripple"
+    }
+  ],
+  "world_skins": [
+    {
+      "skin_id": "garden_light_seeds",
+      "template_id": "TEMPLATE-REPEAT-TARGETS",
+      "entity_type": "light_seed",
+      "target_count": 5,
+      "initial_state": "dormant",
+      "completed_state": "active",
+      "action_id": "grow_next_seed",
+      "objective": "让 5 颗光种全部醒来",
+      "display": {
+        "world_name": "数据花园",
+        "entity_name": "光种",
+        "action_name": "生长",
+        "console_name": "休眠光种控制台",
+        "objective": "让 5 颗光种全部醒来",
+        "scenario_frame": "修复失灵的花园法则，让休眠光种依次醒来"
+      },
+      "assets": {
+        "background_before": "../skins/garden_light_seeds/background_before.png",
+        "background_after": "../skins/garden_light_seeds/background_after.png",
+        "target_entity": "../skins/garden_light_seeds/target_entity.png",
+        "console": "../skins/garden_light_seeds/console.png",
+        "npc": "../skins/garden_light_seeds/npc.png"
+      }
+    },
+    {
+      "skin_id": "garden_inspection",
+      "template_id": "TEMPLATE-REPEAT-TARGETS",
+      "entity_type": "inspection_target",
+      "target_count": 6,
+      "initial_state": "unchecked",
+      "completed_state": "checked",
+      "action_id": "inspect_next_target",
+      "objective": "依次巡检 6 个目标",
+      "display": {
+        "world_name": "陌生巡检站",
+        "entity_name": "巡检目标",
+        "action_name": "巡检",
+        "console_name": "巡检控制台",
+        "objective": "依次巡检 6 个目标",
+        "scenario_frame": "把同一结构迁移到陌生巡检器"
+      }
+    }
+  ],
+  "transfer_variants": [
+    {
+      "variant_id": "VAR-LOOP-UNDER-TIDAL-4",
+      "misconception_id": "MIS-LOOP-UNDER",
+      "skin": {
+        "entity_type": "tidal_beacon",
+        "entity_name": "潮汐浮标",
+        "action_name": "校准浮标",
+        "objective": "让所有潮汐浮标恢复稳定",
+        "scenario_frame": "在珊瑚回声湾依次校准每一个潮汐浮标"
+      },
+      "params": {
+        "target_count": 4
+      },
+      "expected": {
+        "probe_count": 3,
+        "expected_diagnosis": {
+          "exact": "SUCCESS",
+          "under": "COUNT_TOO_SMALL",
+          "over": "COUNT_TOO_LARGE"
+        }
+      }
+    },
+    {
+      "variant_id": "VAR-LOOP-OVER-ORBIT-6",
+      "misconception_id": "MIS-LOOP-OVER",
+      "skin": {
+        "entity_type": "orbit_beacon",
+        "entity_name": "轨道信标",
+        "action_name": "同步信标",
+        "objective": "让整条星环航线恢复同步",
+        "scenario_frame": "沿星环依次同步每一个轨道信标"
+      },
+      "params": {
+        "target_count": 6
+      },
+      "expected": {
+        "probe_count": 3,
+        "expected_diagnosis": {
+          "exact": "SUCCESS",
+          "under": "COUNT_TOO_SMALL",
+          "over": "COUNT_TOO_LARGE"
+        }
+      }
+    },
+    {
+      "variant_id": "VAR-LOOP-ACTION-OASIS-5",
+      "misconception_id": "MIS-LOOP-ACTION",
+      "skin": {
+        "entity_type": "oasis_spring",
+        "entity_name": "绿洲泉眼",
+        "action_name": "疏通泉眼",
+        "objective": "让古老水路重新流动",
+        "scenario_frame": "沿古老水路依次疏通每一个绿洲泉眼"
+      },
+      "params": {
+        "target_count": 5
+      },
+      "expected": {
+        "probe_count": 3,
+        "expected_diagnosis": {
+          "exact": "SUCCESS",
+          "under": "COUNT_TOO_SMALL",
+          "over": "COUNT_TOO_LARGE"
+        }
+      }
+    }
+  ],
+  "asset_integrity": {
+    "garden_light_seeds/background_after": {
+      "path": "../skins/garden_light_seeds/background_after.png",
+      "sha256": "fbe8968b8c90a691b8b8d17e8c590ebe652232bf0816830017a882248b8b2e2e",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2260529,
+      "source_name": "data_garden_world_restored.png"
+    },
+    "garden_light_seeds/background_before": {
+      "path": "../skins/garden_light_seeds/background_before.png",
+      "sha256": "e52aff8875ca87e4d7781aa51801a4cf3cd571f5b4e7b7edd2d24867981ad72b",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2231176,
+      "source_name": "data_garden_world.png"
+    },
+    "garden_light_seeds/console": {
+      "path": "../skins/garden_light_seeds/console.png",
+      "sha256": "10be96835a0e6cae9af88ceafc356042f737da30d25915b774140feca554e52a",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1330526,
+      "source_name": "data_garden_console.png"
+    },
+    "garden_light_seeds/npc": {
+      "path": "../skins/garden_light_seeds/npc.png",
+      "sha256": "4a7ef0497123d55e035d596e01e9a403a4913a6703d198bc5a587c07cc634250",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 413630,
+      "source_name": "xiao_hetao.png"
+    },
+    "garden_light_seeds/target_entity": {
+      "path": "../skins/garden_light_seeds/target_entity.png",
+      "sha256": "b57f405b3b11a703777aa966a7976d2bef57c5536611dcbf8a9e3bcf1da38fc3",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 576001,
+      "source_name": "data_garden_light_seed.png"
+    }
+  },
+  "diagnostic_rules": [
+    {
+      "diagnosis_id": "MISSING_REPEAT",
+      "priority": 10,
+      "condition": "program_has_no_repeat"
+    },
+    {
+      "diagnosis_id": "EMPTY_LOOP_BODY",
+      "priority": 20,
+      "condition": "repeat_body_empty"
+    },
+    {
+      "diagnosis_id": "WRONG_ACTION",
+      "priority": 30,
+      "condition": "action_not_bound_to_skin"
+    },
+    {
+      "diagnosis_id": "COUNT_TOO_SMALL",
+      "priority": 40,
+      "condition": "completed_targets_below_target"
+    },
+    {
+      "diagnosis_id": "COUNT_TOO_LARGE",
+      "priority": 50,
+      "condition": "action_without_target"
+    },
+    {
+      "diagnosis_id": "SUCCESS",
+      "priority": 100,
+      "condition": "goal_met_with_expected_structure"
+    }
+  ],
+  "stages": [
+    {
+      "id": "observe",
+      "purpose": "只展示 5 颗休眠光种，不提前命名概念"
+    },
+    {
+      "id": "predict",
+      "purpose": "预测一次生长会改变多少颗光种"
+    },
+    {
+      "id": "single_action",
+      "purpose": "运行一次 grow，让世界验证一次动作只影响一个目标"
+    },
+    {
+      "id": "program",
+      "purpose": "从自然语言目标进入积木结构，拖入动作并设置次数"
+    },
+    {
+      "id": "trace",
+      "purpose": "逐行高亮程序并与光种、连接线同步反馈"
+    },
+    {
+      "id": "counterfactual",
+      "purpose": "把 5 改成 4，明确留下最后一颗未点亮光种"
+    },
+    {
+      "id": "transfer",
+      "purpose": "在 6 目标巡检器的新情境中无术语提示迁移"
+    },
+    {
+      "id": "concept_name",
+      "purpose": "最后命名循环，并显形 C 语言 for 代码"
+    },
+    {
+      "id": "debug_boss",
+      "purpose": "观察护盾与弱点轨迹，修改攻击条件后真实重跑"
+    },
+    {
+      "id": "explain",
+      "purpose": "用学习证据复盘预测、修改、迁移与 Debug"
+    }
+  ],
+  "hint_policy": [
+    {
+      "level": 1,
+      "intent": "鼓励求助并确认当前世界目标",
+      "template": "你愿意求助很好。先确认目标：你希望所有光种最后都醒来，对吗？",
+      "reveal_answer": false,
+      "next_action": "确认当前目标"
+    },
+    {
+      "level": 2,
+      "intent": "引导学生观察执行结果与世界目标之间的偏差",
+      "template": "观察运行结果：哪一颗没有按预期变化？比较亮起数量和目标数量。",
+      "reveal_answer": false,
+      "next_action": "观察未变化的目标"
+    },
+    {
+      "level": 3,
+      "intent": "根据确定性诊断缩小到可能出错的程序区域",
+      "template": "“生长”动作已经有效，可能出错的是橙色重复结构里的执行次数。",
+      "reveal_answer": false,
+      "next_action": "检查执行次数"
+    },
+    {
+      "level": 4,
+      "intent": "提供部分结构和真实执行轨迹，保留最后推断",
+      "template": "看执行轨迹：每执行一次只亮一颗。补齐最后一颗需要的那一步。",
+      "reveal_answer": false,
+      "next_action": "沿轨迹补齐一步"
+    },
+    {
+      "level": 5,
+      "intent": "给出兜底答案并标记复练，仍保留学生执行权",
+      "template": "完整结构是“重复5次：生长”。这次会标记复练，仍由你亲手修改并运行。",
+      "reveal_answer": true,
+      "needs_review": true,
+      "next_action": "学生亲手修改并运行"
+    }
+  ],
+  "surprise": {
+    "id": "garden_restore",
+    "trigger": "main_program_exact",
+    "duration_seconds": 1.8,
+    "causal_copy": "5 颗光种按你的执行轨迹依次醒来。",
+    "must_be_student_triggered": true
+  },
+  "evidence": {
+    "event_schema_version": "1.0.0",
+    "primary": "transfer_first_pass_without_hint",
+    "secondary": [
+      "counterfactual_pass",
+      "concept_code_mapping_seen",
+      "boss_debug_pass",
+      "delayed_retest_pass"
+    ],
+    "delight": [
+      "post_surprise_voluntary_exploration_seconds",
+      "optional_explore_completed",
+      "child_surprise_rating"
+    ],
+    "events": [
+      "session_started",
+      "stage_entered",
+      "prediction_submitted",
+      "program_run",
+      "hint_requested",
+      "hint_delivered",
+      "surprise_triggered",
+      "counterfactual_run",
+      "transfer_run",
+      "concept_revealed",
+      "boss_debug_run",
+      "needs_review_marked",
+      "optional_explore_completed",
+      "session_completed"
+    ],
+    "session_metrics": {
+      "effectiveness": {
+        "transfer_first_pass_without_hint": 40,
+        "counterfactual_pass": 20,
+        "concept_revealed": 10,
+        "boss_debug_pass": 20,
+        "no_review_required": 10
+      },
+      "delight": {
+        "surprise_triggered": 35,
+        "optional_explore_completed": 35,
+        "post_surprise_exploration_second_cap": 30
+      }
+    }
+  }
+}

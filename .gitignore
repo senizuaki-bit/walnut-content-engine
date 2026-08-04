@@ -1,12 +1,33 @@
 xiao-hetao-ai-server/.env
 xiao-hetao-ai-server/*.log
+xiao-hetao-ai-server/data/
+xiao-hetao-ai-server/.integration-data/
 content-engine/*.log
 content-engine/.state/
 content-engine/candidates/
 
-# Godot editor cache, local export credentials, and QA artifacts
+# Godot editor cache, local export credentials, and generated QA artifacts.
+# Keep the source harnesses required by run-godot-integration-test.ps1.
 my_topdown_game-main/.godot/
-my_topdown_game-main/qa/
+my_topdown_game-main/qa/**
+!my_topdown_game-main/qa/
+!my_topdown_game-main/qa/source_room_stage_test.gd
+!my_topdown_game-main/qa/source_room_stage_test.tscn
+!my_topdown_game-main/qa/multiscene_e2e_harness.gd
+!my_topdown_game-main/qa/multiscene_e2e_harness.tscn
+
+# Local runtimes, build outputs, source references, and private design inputs
+/.codex-remote-attachments/
+/deliverables/
+/tmp/
+/tools/
+/Godot4完整制作《元气骑士》类游戏/
+/Udemy */
+/核桃代码世界_AI原生全量原型方案_v2.1.md
+/*.doc
+/*.docx
+/*.pdf
+/~$*
 
 # Local operating-system artifacts
 .DS_Store

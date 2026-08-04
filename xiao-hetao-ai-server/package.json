@@ -1,0 +1,13 @@
+{
+  "name": "xiao-hetao-ai-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node server.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

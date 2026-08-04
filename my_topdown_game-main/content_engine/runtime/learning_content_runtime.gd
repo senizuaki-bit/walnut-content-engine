@@ -88,15 +88,25 @@ func load_skin_texture(skin_id: String, asset_key: String, fallback_path: String
 	var skin := _find_skin(skin_id)
 	var asset_ref := str(skin.get("assets", {}).get(asset_key, "")) if not skin.is_empty() else ""
 	var resolved := resolve_asset_path(asset_ref)
-	if not resolved.is_empty() and FileAccess.file_exists(resolved):
+	if not resolved.is_empty():
 		var integrity_key := "%s/%s" % [skin_id, asset_key]
 		var expected_hash := str(manifest.get("asset_integrity", {}).get(integrity_key, {}).get("sha256", ""))
-		if not expected_hash.is_empty() and FileAccess.get_sha256(resolved) != expected_hash:
+		var source_file_exists := FileAccess.file_exists(resolved)
+		var integrity_ok := true
+		if source_file_exists and not expected_hash.is_empty() and FileAccess.get_sha256(resolved) != expected_hash:
+			integrity_ok = false
 			push_error("CONTENT_ASSET_HASH_MISMATCH: %s" % integrity_key)
-		else:
-			var image := Image.load_from_file(resolved)
-			if image and not image.is_empty():
-				return ImageTexture.create_from_image(image)
+		if integrity_ok:
+			# Exported projects can keep only the imported resource/remap, without
+			# exposing the original PNG through FileAccess.
+			if resolved.begins_with("res://") and ResourceLoader.exists(resolved):
+				var imported_texture := ResourceLoader.load(resolved) as Texture2D
+				if imported_texture:
+					return imported_texture
+			if source_file_exists:
+				var image := Image.load_from_file(resolved)
+				if image and not image.is_empty():
+					return ImageTexture.create_from_image(image)
 	if fallback_path.is_empty():
 		return null
 	return load(fallback_path) as Texture2D
